@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/diseases_animal_list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Animal Name"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:padding="15dp"
+        android:background="@drawable/diseases_textview_background"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="6dp"
+        />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_below="@id/diseases_animal_list_layout"
+        android:layout_marginTop="3dp"
+        android:background="@drawable/diseases_line_background"
+
+        />
+
+
+
+</RelativeLayout>

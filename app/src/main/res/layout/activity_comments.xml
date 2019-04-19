@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CommentsActivity.CommentsActivity"
+    android:background="@color/loginBackgroundcolor"
+    >
+
+    <include
+        layout="@layout/toolbar_for_all"
+        android:id="@+id/commentsToolbar">
+
+    </include>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/linearForcommentHere"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/commentRecycler"
+        android:layout_below="@id/commentsToolbar"
+        >
+
+    </android.support.v7.widget.RecyclerView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:weightSum="3"
+        android:layout_margin="5dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/linearForcommentHere"
+
+        >
+
+        <EditText
+            android:gravity="bottom"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="Type Here..."
+            android:background="@drawable/commenttext_input"
+            android:padding="15dp"
+            android:textSize="22sp"
+            android:layout_weight="2"
+            android:id="@+id/commentInput"
+            android:textColor="@color/pdlg_color_white"
+            android:textColorHint="@color/pdlg_color_white"
+            />
+        <ImageView
+            android:id="@+id/btn_comment_post"
+            android:layout_width="90dp"
+            android:layout_height="49dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/post_comment"
+            android:layout_marginLeft="8dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

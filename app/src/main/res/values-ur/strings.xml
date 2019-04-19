@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VeterinarySystemDemo</string>
+
+    <string name="navigation_drawer_open">کھولیں نیویگیشن دراج</string>
+    <string name="navigation_drawer_close">بند نیویگیشن دراج</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">نیویگیشن ہیڈر</string>
+    <string name="action_settings">ترتیبات</string>
+    <string name="title_activity_store_drawer">اسٹور دراج کی سرگرمی</string>
+    <string name="title_activity_doctor_drawer">ڈاکٹر دراج کی سرگرمی</string>
+
+    <string name="Addproblems">مسائل شامل کریں</string>
+    <string name="Doctor">ڈاکٹر</string>
+    <string name="Medicines">ادویات</string>
+    <string name="Diseases">بیماریاں</string>
+    <string name="Growth">نشوونما</string>
+    <string name="Cart">خریداری</string>
+    <string name="History">تاریخ</string>
+    <string name="UserManual">طریقہ استعمال</string>
+    <string name="Settings">سیٹنگیں</string>
+    <string name="Logout">لاگ آؤٹ</string>
+    <string name="ChangeLanguage">زبان تبدیل کریں</string>
+    <string name="AboutUs"> ہمارے بارے میں</string>
+    <string name="LatestUpdates">تازہ ترین اپ ڈیٹس</string>
+    <string name="PDRegisterTital">اکاؤنٹ رجسٹر</string>
+    <string name="PDRegisterMessage">برائے مہربانی انتظار کریں....</string>
+    <string name="PDLoginTital">لاگ ان</string>
+    <string name="PDLoginMessage">برائے مہربانی انتظار کریں....</string>
+    <string name="English">انگریزی</string>
+    <string name="Urdu">اردو</string>
+
+</resources>

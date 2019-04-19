@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".user_doctor_Activity.User_doctor_appointment_Activity">
+
+    <include
+        android:id="@+id/user_doctor_appointment_toolbar"
+        layout="@layout/toolbar_for_all"></include>
+
+    <com.jaredrummler.materialspinner.MaterialSpinner
+        android:id="@+id/sp_city_doc_uda"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_doctor_appointment_toolbar"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:text="Please Select City"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:ms_arrow_tint="@color/colorAccent"
+        app:ms_background_color="@color/loginBackgroundcolor"
+        app:ms_text_color="@color/pdlg_color_white" />
+
+    <com.jaredrummler.materialspinner.MaterialSpinner
+        android:id="@+id/sp_tehsile_doc_uda"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sp_city_doc_uda"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:ms_arrow_tint="@color/colorAccent"
+        app:ms_background_color="@color/loginBackgroundcolor"
+        app:ms_text_color="@color/pdlg_color_white" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_uda"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/sp_tehsile_doc_uda"
+        android:layout_marginTop="5dp"></android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

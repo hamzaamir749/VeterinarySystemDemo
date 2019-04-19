@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbar_for_medicine_activity"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/loginBackgroundcolor"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:text="Medicines"
+    android:gravity="center"
+    android:layout_alignParentStart="true"
+    android:layout_centerInParent="true"
+    android:textColor="@color/pdlg_color_white"
+    android:textSize="20dp"
+    android:textStyle="bold"
+    />
+        <FrameLayout
+            style="?attr/actionButtonStyle"
+            android:layout_width="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_height="60dp"
+            android:clipToPadding="false"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/carticonbtn"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_gravity="right|end|center"
+                android:src="@drawable/carticon2"/>
+
+            <TextView
+                android:id="@+id/tvBadge"
+                android:layout_width="20dp"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right|end|top"
+                android:background="@drawable/notification_badge"
+                android:gravity="center"
+                android:padding="2dp"
+                android:textColor="@android:color/white"
+                android:text="0"
+                android:textSize="12sp" />
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+
+</android.support.v7.widget.Toolbar>

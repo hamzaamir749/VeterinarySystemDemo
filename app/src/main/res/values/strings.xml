@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">VeterinarySystemDemo</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_store_drawer">StoreDrawerActivity</string>
+    <string name="title_activity_doctor_drawer">DoctorDrawerActivity</string>
+
+    <string name="Addproblems">Add Problems</string>
+    <string name="Doctor">Doctor</string>
+    <string name="Medicines">Medicines</string>
+    <string name="Diseases">Diseases</string>
+    <string name="Growth">Growth</string>
+    <string name="Cart">Cart</string>
+    <string name="History">History</string>
+    <string name="UserManual">User Manual</string>
+    <string name="Settings">Settings</string>
+    <string name="Logout">Log Out</string>
+    <string name="LatestUpdates">Latest Updates</string>
+    <string name="ChangeLanguage">Change Language</string>
+    <string name="AboutUs">About us</string>
+    <string name="PDRegisterTital">Registering Account</string>
+    <string name="PDRegisterMessage">Please Wait....</string>
+    <string name="PDLoginTital">Log in</string>
+    <string name="PDLoginMessage">Please Wait....</string>
+    <string name="English">English</string>
+    <string name="Urdu">اردو</string>
+
+
+</resources>

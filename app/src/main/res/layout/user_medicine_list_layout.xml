@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="335dp"
+    android:id="@+id/productItem"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginLeft="5dp"
+    android:clickable="true"
+    android:focusable="true"
+
+    android:layout_gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/clickableLayout"
+        android:background="@color/pdlg_color_yellow"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="18dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:background="@android:color/holo_red_light"
+                android:text="-5%"
+                android:visibility="invisible"
+                android:layout_alignParentEnd="true"
+                android:paddingStart="3dp"
+                android:paddingLeft="3dp"
+                android:paddingEnd="3dp"
+                android:id="@+id/tvPercentDiscount"
+                android:paddingRight="3dp"
+                android:layout_alignParentRight="true"
+                android:gravity="end"
+                android:textColor="@android:color/white"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:id="@+id/uml_medicine_image"
+            android:scaleType="fitCenter"
+            android:layout_height="200dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:gravity="start"
+                android:layout_alignParentTop="true"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="LARGE PIZZA"
+                    android:textColor="@android:color/black"
+                    android:id="@+id/uml_medicine_name"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="invisible"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:text="Rs. "
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:text="10"
+                        android:id="@+id/tvDiscountedPrice"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:textSize="18sp"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:id="@+id/discountedPriceLayout"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Price: "
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/black"
+                        android:id="@+id/uml_price"
+                        android:text="12"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Current Stock: "
+                        android:textSize="12sp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/black"
+                        android:id="@+id/tvCurrentStock"
+                        android:text="12"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Store: "
+                        android:textSize="12sp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/black"
+                        android:id="@+id/uml_storename"
+                        android:text="Store Name"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="70dp"
+                android:gravity="center"
+                android:id="@+id/uml_add"
+                android:background="@color/orange_color"
+                android:layout_gravity="bottom|end"
+                android:orientation="horizontal"
+                android:layout_height="28dp">
+
+                <Button
+                    android:layout_width="20dp"
+                    android:visibility="gone"
+                    android:text="-"
+                    android:textSize="20sp"
+                    android:textColor="@color/textColorPrimary"
+                    android:id="@+id/btnMinusUML"
+                    android:background="@android:color/transparent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="30dp"
+                    android:id="@+id/tvQuantity"
+                    android:textSize="12sp"
+                    android:text="ADD"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/textColorPrimary"
+                    android:visibility="visible"
+                    android:background="@android:color/transparent"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:layout_width="20dp"
+                    android:text="+"
+                    android:visibility="gone"
+                    android:textSize="20sp"
+                    android:textColor="@color/textColorPrimary"
+                    android:id="@+id/btnPlusUML"
+                    android:background="@android:color/transparent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/tvProductId"
+        android:visibility="gone"
+        android:text="id"
+        android:layout_height="wrap_content" />
+
+
+</android.support.v7.widget.CardView>

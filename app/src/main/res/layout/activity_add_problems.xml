@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/loginBackgroundcolor"
+    tools:context=".AddProblemsActivity">
+
+    <include
+
+        layout="@layout/toolbar_for_all"
+        android:id="@+id/addproblemActivityToolBar">
+
+    </include>
+    <ImageView
+        android:layout_below="@id/addproblemActivityToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@drawable/img_addpost"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:padding="30dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/addproblemImageView"
+        android:src="@drawable/select_image"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
+        android:layout_below="@id/addproblemImageView"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:padding="15dp"
+        android:hint="Description"
+        android:textColorHint="@color/pdlg_color_white"
+        android:background="@drawable/edt_addpost"
+        android:textSize="22sp"
+        android:textColor="@color/colorPrimary"
+        android:id="@+id/addproblemDescription"
+        />
+    <Button
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addproblemDescription"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:text="Post It"
+        android:textSize="22sp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:background="@drawable/btn_addpost"
+        android:textColor="@color/pdlg_color_white"
+        android:id="@+id/addproblembtn"
+        />
+
+</RelativeLayout>

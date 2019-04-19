@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".diseasesAnimalListActivity">
+    <include
+        android:id="@+id/diseases_animal_list_toolbar"
+        layout="@layout/toolbar_for_all"></include>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recycler_disease_list_animal"
+        android:layout_below="@+id/diseases_animal_list_toolbar"
+        ></android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

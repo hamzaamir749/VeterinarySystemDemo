@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".userMedicineListActivity"
+    >
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appbarlayout"
+        android:theme="@style/AppTheme.PopupOverlay"
+        android:background="@color/loginBackgroundcolor">
+        <include
+            layout="@layout/toolbar_for_medicine_activity"
+            android:id="@+id/user_medicine_list_toolbar"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark"
+            >
+        </include>
+
+
+        <android.support.v7.widget.SearchView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/etSearchBox"
+            android:layout_margin="8dp"
+            app:queryHint="Search Products..."
+            android:background="@drawable/searchbox_drawable"
+            android:textColor="@color/textColorPrimary"
+            app:iconifiedByDefault="false" />
+
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appbarlayout"
+        android:layout_marginTop="5dp"
+        android:id="@+id/user_medicine_list_recycler"
+        >
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>
