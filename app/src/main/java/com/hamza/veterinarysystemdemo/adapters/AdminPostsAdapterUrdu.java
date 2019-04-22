@@ -40,9 +40,9 @@ public class AdminPostsAdapterUrdu extends RecyclerView.Adapter<AdminPostsAdapte
     @Override
     public void onBindViewHolder(@NonNull AdminPostsAdapterUrdu.modelViewHolder holder, int i) {
 
-        holder.nameP.setText(postsListAdmin.get(i).getName());
-        holder.dateP.setText(postsListAdmin.get(i).getDate());
-        holder.timeP.setText(postsListAdmin.get(i).getTime());
+        holder.nameP.setText(postsListAdmin.get(i).getName()+" ");
+        holder.dateP.setText(postsListAdmin.get(i).getDate()+" ");
+        holder.timeP.setText(" "+postsListAdmin.get(i).getTime());
         holder.desciptionP.setText(postsListAdmin.get(i).getDescription());
         String image = postsListAdmin.get(i).getImage();
         if (TextUtils.isEmpty(image)) {

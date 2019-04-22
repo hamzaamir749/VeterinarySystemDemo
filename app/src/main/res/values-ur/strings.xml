@@ -30,5 +30,8 @@
     <string name="PDLoginMessage">برائے مہربانی انتظار کریں....</string>
     <string name="English">انگریزی</string>
     <string name="Urdu">اردو</string>
+    <string name="postdescription">پوسٹ تفصیل...</string>
+    <string name="comments">تبصرے...</string>
+    <string name="postedat"> پوسٹ کیا گیا: </string>
 
 </resources>

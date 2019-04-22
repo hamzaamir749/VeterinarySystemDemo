@@ -28,6 +28,9 @@
     <string name="PDLoginMessage">Please Wait....</string>
     <string name="English">English</string>
     <string name="Urdu">اردو</string>
+    <string name="postdescription">Post Description...</string>
+    <string name="comments">Comments...</string>
+    <string name="postedat">Posted at :</string>
 
 
 </resources>

@@ -9,6 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -33,11 +37,12 @@ import java.util.Map;
 public class User_doctor_appointment_Activity extends AppCompatActivity {
     Toolbar mToolbar;
     String getCities_URL, getTehseel_URL, getDoctors_URL;
-    ArrayList<String> citynamesArraylist;
-    ArrayList<String> tehseelnamesArraylist;
-    MaterialSpinner spinner, spinner1;
+    List<City> citynamesArraylist;
+    List<tehseel> tehseelnamesArraylist;
+    City selectedCity;
+    tehseel selectedTehseel;
+    Spinner spinnercity, spinnertehseel;
     IPADDRESS ipaddress;
-
     RecyclerView doctorsRecycler;
 
     List<User_DA_Model> docList;
@@ -51,7 +56,8 @@ public class User_doctor_appointment_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_doctor_appointment_);
 
-
+        spinnercity=findViewById(R.id.sp_city_doc_uda);
+        spinnertehseel=findViewById(R.id.sp_tehsile_doc_uda);
         mToolbar = findViewById(R.id.user_doctor_appointment_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Doctors");
@@ -75,9 +81,10 @@ public class User_doctor_appointment_Activity extends AppCompatActivity {
 
         citynamesArraylist = new ArrayList<>();
         tehseelnamesArraylist = new ArrayList<>();
+        selectedCity = null;
+        selectedTehseel = null;
         docList = new ArrayList<>();
-        spinner = (MaterialSpinner) findViewById(R.id.sp_city_doc_uda);
-        spinner1 = (MaterialSpinner) findViewById(R.id.sp_tehsile_doc_uda);
+
         doctorsRecycler = findViewById(R.id.recycler_uda);
         linearLayoutManager = new LinearLayoutManager(this);
         doctorsRecycler.setHasFixedSize(true);
@@ -87,8 +94,10 @@ public class User_doctor_appointment_Activity extends AppCompatActivity {
         getCities();
     }
 
+
     private void getCities() {
-        StringRequest getcitiesRequest = new StringRequest(Request.Method.POST, getCities_URL, new Response.Listener<String>() {
+
+        StringRequest getcitiesRequest = new StringRequest(Request.Method.GET, getCities_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
@@ -97,30 +106,18 @@ public class User_doctor_appointment_Activity extends AppCompatActivity {
                     JSONArray jsonArray = jsonObject.getJSONArray("citydata");
                     boolean status = jsonObject.getBoolean("status");
                     if (status) {
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject object = jsonArray.getJSONObject(i);
-                            String names = object.getString("city");
-                            // citynamesArraylist.add(0,"Please Select City");
-                            citynamesArraylist.add(names);
-                        }
-                        citynamesArraylist.add(0, "Please Select City");
-                        spinner.setItems(citynamesArraylist);
-                        spinner.getSelectedIndex();
+                        City newItem;
+                        citynamesArraylist.clear();
 
-                        spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
-                            @Override
-                            public void onItemSelected(MaterialSpinner view, int position, long id, String city) {
-                                //Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();
-                                if (city.equals("Please Select City")) {
-                                    Snackbar.make(view, "Please Select Any City", Snackbar.LENGTH_LONG).show();
-                                    spinner1.setVisibility(View.INVISIBLE);
-                                } else {
-                                    spinner1.setVisibility(View.VISIBLE);
-                                    getTehseel(city);
-                                    //Toast.makeText(User_doctor_appointment_Activity.this, item, Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+                        for (int i = 0; i < jsonArray.length(); i++) {
+
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            newItem = new City();
+                            newItem.setCid(object.getInt("id"));
+                            newItem.setCname(object.getString("name"));
+                            citynamesArraylist.add(newItem);
+                        }
+                        setCitySpinner();
 
 
                     } else {
@@ -138,19 +135,50 @@ public class User_doctor_appointment_Activity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
             }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> user = new HashMap<>();
-                user.put("usercatgory", "2");
-                return user;
-            }
-        };
+        });
         Volley.newRequestQueue(this).add(getcitiesRequest);
 
     }
 
-    public void getTehseel(final String city) {
+    private void setCitySpinner() {
+        SpinnerAdapter spinnerAdapter;
+        List<String> cities=getCitiesForSpinner();
+        spinnerAdapter=new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,cities);
+        spinnercity.setAdapter(spinnerAdapter);
+
+        spinnercity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String tvSelectedCity = parent.getItemAtPosition(position).toString();
+                if(tvSelectedCity.equals("Please Select City")){
+                    selectedCity = null;
+                    spinnertehseel.setVisibility(View.GONE);
+                    return;
+                }
+                else
+                {
+                    spinnertehseel.setVisibility(View.VISIBLE);
+                    for (City item : citynamesArraylist) {
+                        if (item.getCname().equals(tvSelectedCity)) {
+                            selectedCity = item;
+                        }
+                    }
+                    Toast.makeText(getApplicationContext(), String.valueOf(selectedCity.getCid()), Toast.LENGTH_SHORT).show();
+                    getTehseel(String.valueOf(selectedCity.getCid()));
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+    }
+
+    private void getTehseel(final String cityid) {
         StringRequest getTehseelRequest = new StringRequest(Request.Method.POST, getTehseel_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -160,28 +188,16 @@ public class User_doctor_appointment_Activity extends AppCompatActivity {
                     JSONArray jsonArray = jsonObject.getJSONArray("tehseeldata");
                     boolean status = jsonObject.getBoolean("status");
                     if (status) {
+                        tehseel newItem;
+                        tehseelnamesArraylist.clear();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
-                            String names = object.getString("tehseel");
-                            tehseelnamesArraylist.add(names);
+                            newItem = new tehseel();
+                            newItem.setTname(object.getString("name"));
+                            newItem.setTid(object.getInt("id"));
+                            tehseelnamesArraylist.add(newItem);
                         }
-                        tehseelnamesArraylist.add(0, "Please Select Tehseel");
-                        spinner1.setItems(tehseelnamesArraylist);
-
-                        spinner1.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
-                            @Override
-                            public void onItemSelected(MaterialSpinner view, int position, long id, String tehseel) {
-                                if (tehseel.equals("Please Select Tehseel")) {
-                                    Snackbar.make(view, "Please Select Any Tehseel", Snackbar.LENGTH_LONG).show();
-
-                                } else {
-
-                                    getDoctors(city, tehseel);
-                                }
-                            }
-                        });
-
-
+                        setTehseelSpinner();
                     } else {
                         Toast.makeText(getApplicationContext(), "Could not get Tehseel data", Toast.LENGTH_SHORT).show();
                     }
@@ -204,66 +220,68 @@ public class User_doctor_appointment_Activity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> items = new HashMap<>();
-                items.put("cityname", city);
-                items.put("usercatgory", "2");
+                items.put("cityidd", cityid);
                 return items;
             }
         };
         Volley.newRequestQueue(this).add(getTehseelRequest);
 
+
     }
 
-    private void getDoctors(final String city, final String tehseel) {
+    private void setTehseelSpinner() {
 
-        StringRequest getDoctorsRequest = new StringRequest(Request.Method.POST, getDoctors_URL, new Response.Listener<String>() {
+        List<String> tehseels=getTehseelNames();
+        SpinnerAdapter adapter = new ArrayAdapter<>(context,android.R.layout.simple_spinner_dropdown_item,tehseels);
+        spinnertehseel.setAdapter(adapter);
+
+        spinnertehseel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onResponse(String response) {
-                try {
-
-                    JSONObject jsonObject = new JSONObject(response);
-                    boolean status = jsonObject.getBoolean("status");
-                    if (status) {
-                        JSONArray jsonArray = jsonObject.getJSONArray("doctors");
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject object = jsonArray.getJSONObject(i);
-                            int id = object.getInt("id");
-                            String name = object.getString("name");
-                            String image = object.getString("profileimage");
-                            String tehseelplace = object.getString("tehseel");
-                            User_DA_Model user_da_model = new User_DA_Model(id, name, image, tehseelplace);
-                            docList.add(user_da_model);
-                            user_da_adapter = new User_DA_Adapter(docList, context);
-
-                        }
-
-                        doctorsRecycler.setAdapter(user_da_adapter);
-
-                    }
-
-                } catch (Exception e) {
-
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String tvSelectedTehseel = parent.getItemAtPosition(position).toString();
+                if(tvSelectedTehseel.equals("Please Select Tehseel")){
+                    selectedTehseel = null;
+                    spinnertehseel.setVisibility(View.GONE);
+                    return;
                 }
+                spinnertehseel.setVisibility(View.VISIBLE);
+                for (tehseel item : tehseelnamesArraylist) {
+                    if (item.getTname().equals(tvSelectedTehseel)) {
+                        selectedTehseel = item;
+                    }
+                }
+                getDoctors(String.valueOf(selectedTehseel.getTid()));
 
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        }) {
+        });
 
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> getDocotorMap = new HashMap<>();
-                getDocotorMap.put("cityname", city);
-                getDocotorMap.put("tehseelname", tehseel);
-                getDocotorMap.put("usercategory", "2");
-                return getDocotorMap;
-            }
-        };
+    }
 
-        Volley.newRequestQueue(this).add(getDoctorsRequest);
+    private void getDoctors(String tehseelid) {
+        Toast.makeText(getApplicationContext(), tehseelid, Toast.LENGTH_SHORT).show();
+    }
 
+    private List<String> getCitiesForSpinner() {
+        List<String> cities = new ArrayList<>();
+        cities.add("Please Select City");
+        for (City item : citynamesArraylist) {
+            cities.add(item.getCname());
+        }
+        return cities;
+    }
+
+    private List<String> getTehseelNames() {
+        List<String> tehseelname = new ArrayList<>();
+        tehseelname.add("Please Select Tehseel");
+        for (tehseel item : tehseelnamesArraylist) {
+            tehseelname.add(item.getTname());
+        }
+        return tehseelname;
     }
 
     @Override

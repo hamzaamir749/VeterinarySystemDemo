@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity
     IPADDRESS ipaddress;
     Context context;
     RecyclerView adminPostRecycler;
+    PrettyDialog prettyDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity
         //ChangeLanguage = String.valueOf(R.string.ChangeLanguage);
         userSessionManager = new UserSessionManager(this);
         clientSessionDetails = userSessionManager.getClientDataDetails();
+        prettyDialog=new PrettyDialog(this);
 
         HeaderName = findViewById(R.id.nav_main_header_name);
         HeaderProfileImage = findViewById(R.id.nav_main_header_profile);
@@ -181,21 +183,24 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.dots_mainUser_cLanguage) {
-            new PrettyDialog(MainActivity.this)
+            prettyDialog
                     .setTitle(getResources().getString(R.string.ChangeLanguage))
                     .setIcon(R.drawable.appplus).addButton(getResources().getString(R.string.English), R.color.loginBackgroundcolor, R.color.design_default_color_primary_dark, new PrettyDialogCallback() {
                 @Override
                 public void onClick() {
                     setLocale("en");
                     recreate();
+                    prettyDialog.dismiss();
                 }
             }).addButton(getResources().getString(R.string.Urdu), R.color.loginBackgroundcolor, R.color.design_default_color_primary_dark, new PrettyDialogCallback() {
                 @Override
                 public void onClick() {
                     setLocale("ur");
                     recreate();
+                    prettyDialog.dismiss();
                 }
             }).show();
+
             return true;
         } else if (id == R.id.dots_mainUser_contacts) {
             return true;
