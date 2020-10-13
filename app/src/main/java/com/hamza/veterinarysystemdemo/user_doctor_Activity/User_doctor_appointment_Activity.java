@@ -1,18 +1,22 @@
 package com.hamza.veterinarysystemdemo.user_doctor_Activity;
 
+import android.app.Activity;
 import android.content.Context;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
+
+import com.github.ybq.android.spinkit.style.ChasingDots;
+import com.github.ybq.android.spinkit.style.Circle;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -21,7 +25,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.JsonObject;
 import com.hamza.veterinarysystemdemo.IPADDRESS;
 import com.hamza.veterinarysystemdemo.R;
 import com.jaredrummler.materialspinner.MaterialSpinner;
@@ -37,30 +40,33 @@ import java.util.Map;
 public class User_doctor_appointment_Activity extends AppCompatActivity {
     Toolbar mToolbar;
     String getCities_URL, getTehseel_URL, getDoctors_URL;
-    List<City> citynamesArraylist;
-    List<tehseel> tehseelnamesArraylist;
-    City selectedCity;
-    tehseel selectedTehseel;
-    Spinner spinnercity, spinnertehseel;
+    List<String> citynamesArraylist;
+    List<String> tehseelnamesArraylist;
+
+    MaterialSpinner spinnercity, spinnertehseel;
     IPADDRESS ipaddress;
     RecyclerView doctorsRecycler;
 
     List<User_DA_Model> docList;
     User_DA_Adapter user_da_adapter;
-    User_DA_Model user_da_model;
     LinearLayoutManager linearLayoutManager;
     Context context;
+    String lang;
+    String citynames;
+    String Tehseelnames;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_doctor_appointment_);
-
-        spinnercity=findViewById(R.id.sp_city_doc_uda);
-        spinnertehseel=findViewById(R.id.sp_tehsile_doc_uda);
+        progressBar=findViewById(R.id.uda_loading);
+        spinnercity = findViewById(R.id.sp_city_doc_uda);
+        spinnertehseel = findViewById(R.id.sp_tehsile_doc_uda);
         mToolbar = findViewById(R.id.user_doctor_appointment_toolbar);
+        doctorsRecycler = findViewById(R.id.recycler_uda);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Doctors");
+        getSupportActionBar().setTitle(R.string.Doctors);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -72,20 +78,27 @@ public class User_doctor_appointment_Activity extends AppCompatActivity {
         }
 
 
+
         ipaddress = new IPADDRESS();
         String ip = ipaddress.getIpaddress();
         getCities_URL = "http://" + ip + "/VeterinarySystem/getcities.php";
         getTehseel_URL = "http://" + ip + "/VeterinarySystem/gettehseel.php";
         getDoctors_URL = "http://" + ip + "/VeterinarySystem/getdoctors.php";
+        //getCities_URL="http://www.veterinarysystem.ga/getcities.php";
+        //getDoctors_URL="http://www.veterinarysystem.ga/getdoctors.php";
+        //getTehseel_URL="http://www.veterinarysystem.ga/gettehseel.php";
 
 
         citynamesArraylist = new ArrayList<>();
+        String en="en";
+        String ur="ur";
+
         tehseelnamesArraylist = new ArrayList<>();
-        selectedCity = null;
-        selectedTehseel = null;
+
+
         docList = new ArrayList<>();
 
-        doctorsRecycler = findViewById(R.id.recycler_uda);
+
         linearLayoutManager = new LinearLayoutManager(this);
         doctorsRecycler.setHasFixedSize(true);
         doctorsRecycler.setLayoutManager(linearLayoutManager);
@@ -94,38 +107,64 @@ public class User_doctor_appointment_Activity extends AppCompatActivity {
         getCities();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences sharedPreferences = getSharedPreferences("langSetting", Activity.MODE_PRIVATE);
+        lang = sharedPreferences.getString("my_lang", "en");
+
+    }
 
     private void getCities() {
 
-        StringRequest getcitiesRequest = new StringRequest(Request.Method.GET, getCities_URL, new Response.Listener<String>() {
+        StringRequest getCitiesRequest = new StringRequest(Request.Method.POST, getCities_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
                 try {
+
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray jsonArray = jsonObject.getJSONArray("citydata");
                     boolean status = jsonObject.getBoolean("status");
                     if (status) {
-                        City newItem;
-                        citynamesArraylist.clear();
-
-                        for (int i = 0; i < jsonArray.length(); i++) {
-
-                            JSONObject object = jsonArray.getJSONObject(i);
-                            newItem = new City();
-                            newItem.setCid(object.getInt("id"));
-                            newItem.setCname(object.getString("name"));
-                            citynamesArraylist.add(newItem);
+                        tehseelnamesArraylist.clear();
+                        if (lang.equals("en")) {
+                            citynamesArraylist.add(0, "Please Choose City");
+                        } else if (lang.equals("ur")) {
+                            citynamesArraylist.add(0, "شہر کا انتخاب کریں");
                         }
-                        setCitySpinner();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            if (lang.equals("en")) {
+                                citynames = object.getString("name");
+                            } else if (lang.equals("ur")) {
+                                citynames = object.getString("urdu_name");
+                            }
+                            citynamesArraylist.add(citynames);
+                        }
+                        spinnercity.setItems(citynamesArraylist);
+                        spinnercity.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
 
-
+                            @Override
+                            public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                               // Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();
+                                if (item.equals("Please Choose City") || item.equals("شہر کا انتخاب کریں")) {
+                                    tehseelnamesArraylist.clear();
+                                    docList.clear();
+                                    spinnertehseel.setVisibility(View.INVISIBLE);
+                                    doctorsRecycler.setVisibility(View.INVISIBLE);
+                                } else {
+                                    spinnertehseel.setVisibility(View.VISIBLE);
+                                    doctorsRecycler.setVisibility(View.INVISIBLE);
+                                    getTehseel(item);
+                                }
+                            }
+                        });
                     } else {
-                        Toast.makeText(getApplicationContext(), "Could not get City data", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getApplicationContext(), "Could not get Tehseel data", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "parsing exception: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(), "parsing exception: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
 
@@ -133,50 +172,19 @@ public class User_doctor_appointment_Activity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
             }
-        });
-        Volley.newRequestQueue(this).add(getcitiesRequest);
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("language", lang);
+                return map;
+            }
+        };
+        Volley.newRequestQueue(this).add(getCitiesRequest);
 
     }
 
-    private void setCitySpinner() {
-        SpinnerAdapter spinnerAdapter;
-        List<String> cities=getCitiesForSpinner();
-        spinnerAdapter=new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,cities);
-        spinnercity.setAdapter(spinnerAdapter);
-
-        spinnercity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String tvSelectedCity = parent.getItemAtPosition(position).toString();
-                if(tvSelectedCity.equals("Please Select City")){
-                    selectedCity = null;
-                    spinnertehseel.setVisibility(View.GONE);
-                    return;
-                }
-                else
-                {
-                    spinnertehseel.setVisibility(View.VISIBLE);
-                    for (City item : citynamesArraylist) {
-                        if (item.getCname().equals(tvSelectedCity)) {
-                            selectedCity = item;
-                        }
-                    }
-                    Toast.makeText(getApplicationContext(), String.valueOf(selectedCity.getCid()), Toast.LENGTH_SHORT).show();
-                    getTehseel(String.valueOf(selectedCity.getCid()));
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-
-    }
 
     private void getTehseel(final String cityid) {
         StringRequest getTehseelRequest = new StringRequest(Request.Method.POST, getTehseel_URL, new Response.Listener<String>() {
@@ -188,22 +196,55 @@ public class User_doctor_appointment_Activity extends AppCompatActivity {
                     JSONArray jsonArray = jsonObject.getJSONArray("tehseeldata");
                     boolean status = jsonObject.getBoolean("status");
                     if (status) {
-                        tehseel newItem;
+
                         tehseelnamesArraylist.clear();
+                        if (lang.equals("en"))
+                        {
+                            tehseelnamesArraylist.add(0,"Please Choose Tehseel");
+                        }
+                        else if (lang.equals("ur"))
+                        {
+                            tehseelnamesArraylist.add(0,"تحصیل کا انتخاب کریں");
+                        }
+
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
-                            newItem = new tehseel();
-                            newItem.setTname(object.getString("name"));
-                            newItem.setTid(object.getInt("id"));
-                            tehseelnamesArraylist.add(newItem);
+
+
+                            if (lang.equals("en")) {
+
+                                Tehseelnames = object.getString("name");
+                            } else if (lang.equals("ur")) {
+                                Tehseelnames = object.getString("urdu_name");
+                            }
+                            tehseelnamesArraylist.add(Tehseelnames);
                         }
-                        setTehseelSpinner();
+
+                        spinnertehseel.setItems(tehseelnamesArraylist);
+                        spinnertehseel.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+
+                            @Override
+                            public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                                //Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();
+                                if (item.equals("Please Choose Tehseel") || item.equals("تحصیل کا انتخاب کریں")) {
+                                    docList.clear();
+                                    doctorsRecycler.setVisibility(View.INVISIBLE);
+                                } else {
+                                    docList.clear();
+                                    progressBar.setVisibility(View.VISIBLE);
+                                    progressBar.setIndeterminateDrawable(new Circle());
+                                    getDoctors(item);
+                                    doctorsRecycler.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        });
+
                     } else {
-                        Toast.makeText(getApplicationContext(), "Could not get Tehseel data", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getApplicationContext(), "Could not get Tehseel data", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "parsing exception: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(), "parsing exception: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
 
@@ -220,7 +261,8 @@ public class User_doctor_appointment_Activity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> items = new HashMap<>();
-                items.put("cityidd", cityid);
+                items.put("city", cityid);
+                items.put("language", lang);
                 return items;
             }
         };
@@ -229,59 +271,66 @@ public class User_doctor_appointment_Activity extends AppCompatActivity {
 
     }
 
-    private void setTehseelSpinner() {
 
-        List<String> tehseels=getTehseelNames();
-        SpinnerAdapter adapter = new ArrayAdapter<>(context,android.R.layout.simple_spinner_dropdown_item,tehseels);
-        spinnertehseel.setAdapter(adapter);
-
-        spinnertehseel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void getDoctors(String doc) {
+        StringRequest getDoctorRequest = new StringRequest(Request.Method.POST, getDoctors_URL, new Response.Listener<String>() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String tvSelectedTehseel = parent.getItemAtPosition(position).toString();
-                if(tvSelectedTehseel.equals("Please Select Tehseel")){
-                    selectedTehseel = null;
-                    spinnertehseel.setVisibility(View.GONE);
-                    return;
-                }
-                spinnertehseel.setVisibility(View.VISIBLE);
-                for (tehseel item : tehseelnamesArraylist) {
-                    if (item.getTname().equals(tvSelectedTehseel)) {
-                        selectedTehseel = item;
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray jsonArray = jsonObject.getJSONArray("doctors");
+                    boolean status = jsonObject.getBoolean("status");
+                    if (status) {
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            int id = object.getInt("id");
+                            String name = object.getString("name");
+                            String image = object.getString("profileimage");
+                            String tName = object.getString("address");
+                            User_DA_Model user_da_model = new User_DA_Model(id, name, image, tName);
+                            docList.add(user_da_model);
+
+
+                        }
+                        progressBar.setVisibility(View.GONE);
+                        user_da_adapter = new User_DA_Adapter(docList, context);
+                        doctorsRecycler.setAdapter(user_da_adapter);
+
+
+                    } else {
+                        progressBar.setVisibility(View.GONE);
+                      //  Toast.makeText(getApplicationContext(), "Could not get Doctor data", Toast.LENGTH_SHORT).show();
                     }
+
+                } catch (Exception e) {
+                    progressBar.setVisibility(View.GONE);
+                    //Toast.makeText(getApplicationContext(), "parsing exception: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
-                getDoctors(String.valueOf(selectedTehseel.getTid()));
+
 
             }
-
+        }, new Response.ErrorListener() {
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onErrorResponse(VolleyError error) {
 
             }
-        });
 
-    }
-
-    private void getDoctors(String tehseelid) {
-        Toast.makeText(getApplicationContext(), tehseelid, Toast.LENGTH_SHORT).show();
-    }
-
-    private List<String> getCitiesForSpinner() {
-        List<String> cities = new ArrayList<>();
-        cities.add("Please Select City");
-        for (City item : citynamesArraylist) {
-            cities.add(item.getCname());
         }
-        return cities;
-    }
 
-    private List<String> getTehseelNames() {
-        List<String> tehseelname = new ArrayList<>();
-        tehseelname.add("Please Select Tehseel");
-        for (tehseel item : tehseelnamesArraylist) {
-            tehseelname.add(item.getTname());
-        }
-        return tehseelname;
+        ) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> items = new HashMap<>();
+                items.put("tehseelid", doc);
+                items.put("language", lang);
+                return items;
+            }
+        };
+        Volley.newRequestQueue(this).add(getDoctorRequest);
+
+
     }
 
     @Override

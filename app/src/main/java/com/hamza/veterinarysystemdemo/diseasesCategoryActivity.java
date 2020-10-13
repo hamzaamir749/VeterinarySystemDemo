@@ -3,14 +3,15 @@ package com.hamza.veterinarysystemdemo;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -18,6 +19,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.ybq.android.spinkit.style.ChasingDots;
+import com.github.ybq.android.spinkit.style.Circle;
 import com.hamza.veterinarysystemdemo.adapters.diseasesAnimalsNamesAdapter;
 import com.hamza.veterinarysystemdemo.models.diseasesAnimalsNamesModel;
 
@@ -30,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 public class diseasesCategoryActivity extends AppCompatActivity {
-    private android.support.v7.widget.Toolbar mToolbar;
+    private androidx.appcompat.widget.Toolbar mToolbar;
     private RecyclerView disesesRecycler;
     private LinearLayoutManager linearLayoutManager;
     private List<diseasesAnimalsNamesModel> animalsList;
@@ -38,28 +41,18 @@ public class diseasesCategoryActivity extends AppCompatActivity {
     private diseasesAnimalsNamesAdapter dANAdapter;
     private String AnimalsNameList_URL;
     IPADDRESS ipaddress;
+    String lang;
+    ProgressBar progressBar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diseases_category);
-
-        ipaddress=new IPADDRESS();
-        String ip=ipaddress.getIpaddress();
-        AnimalsNameList_URL="http://www.veterinarysystem.ga/getanimalsname.php";
-
-        disesesRecycler=findViewById(R.id.recycler_disease_category_animal);
-        animalsList=new ArrayList<>();
-        context = this;
-        linearLayoutManager=new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        disesesRecycler.setLayoutManager(linearLayoutManager);
-        disesesRecycler.setHasFixedSize(true);
-
+        progressBar=findViewById(R.id.dca_loading);
         mToolbar= findViewById(R.id.diseases_animal_name_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Disease Category");
+        getSupportActionBar().setTitle(R.string.DiseaseCategory);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -71,9 +64,23 @@ public class diseasesCategoryActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getActionBar().setHomeButtonEnabled(true);
         }
-        SharedPreferences sharedPreferences=getSharedPreferences("langSetting", Activity.MODE_PRIVATE);
-        String lang=sharedPreferences.getString("my_lang","");
-        getAnimalsList(lang);
+        ipaddress=new IPADDRESS();
+        String ip=ipaddress.getIpaddress();
+        AnimalsNameList_URL="http://" + ip + "/VeterinarySystem/getanimalsname.php";
+       //AnimalsNameList_URL="http://www.veterinarysystem.ga/getanimalsname.php";
+
+        disesesRecycler=findViewById(R.id.recycler_disease_category_animal);
+        animalsList=new ArrayList<>();
+        context = this;
+        linearLayoutManager=new LinearLayoutManager(this);
+
+        disesesRecycler.setLayoutManager(linearLayoutManager);
+        disesesRecycler.setHasFixedSize(true);
+
+        //SharedPreferences sharedPreferences=getSharedPreferences("langSetting", Activity.MODE_PRIVATE);
+        // lang=sharedPreferences.getString("my_lang","");
+        progressBar.setIndeterminateDrawable(new Circle());
+        getAnimalsList();
 
 
 
@@ -82,16 +89,17 @@ public class diseasesCategoryActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        SharedPreferences sharedPreferences = getSharedPreferences("langSetting", Activity.MODE_PRIVATE);
+        lang = sharedPreferences.getString("my_lang", "en");
 
     }
-
-    private void getAnimalsList(final String lang) {
+    private void getAnimalsList() {
         final StringRequest getAnimalsListRequest=new StringRequest(Request.Method.POST, AnimalsNameList_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject=new JSONObject(response);
-                    //new AlertDialog.Builder(context).setMessage(response).create().show();
+                   // new AlertDialog.Builder(context).setMessage(response).create().show();
                     boolean status = jsonObject.getBoolean("status");
                     if(status){
                         JSONArray jsonArray=jsonObject.getJSONArray("data");
@@ -102,19 +110,22 @@ public class diseasesCategoryActivity extends AppCompatActivity {
                             String name=object.getString("name");
                             diseasesAnimalsNamesModel diseasesAnimalsNamesModels=new diseasesAnimalsNamesModel(id,name);
                             animalsList.add(diseasesAnimalsNamesModels);
-                            dANAdapter=new diseasesAnimalsNamesAdapter(context,animalsList);
+
 
                         }
-
+                        progressBar.setVisibility(View.GONE);
+                        dANAdapter=new diseasesAnimalsNamesAdapter(context,animalsList);
                         disesesRecycler.setAdapter(dANAdapter);
 
                     }else{
-                        Toast.makeText(getApplicationContext(), "Could not get data", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                       // Toast.makeText(getApplicationContext(), "Could not get data", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (Exception e)
                 {
-                    Toast.makeText(getApplicationContext(),"parsing exception: "+e.getMessage(),Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
+                   // Toast.makeText(getApplicationContext(),"parsing exception: "+e.getMessage(),Toast.LENGTH_LONG).show();
                 }
 
             }

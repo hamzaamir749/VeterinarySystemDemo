@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/pdlg_color_gray"
+    tools:context=".StoreSection.StoreHistoryDetailsActivity">
+
+    <include
+        android:id="@+id/shd_toolbar"
+        layout="@layout/toolbar_for_all">
+
+    </include>
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/shd_loading"
+        style="@style/SpinKitView.Large.Circle"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/loading_background"
+        app:SpinKit_Color="@color/goldish"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/shd_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/shd_toolbar">
+
+    </androidx.recyclerview.widget.RecyclerView>
+</RelativeLayout>

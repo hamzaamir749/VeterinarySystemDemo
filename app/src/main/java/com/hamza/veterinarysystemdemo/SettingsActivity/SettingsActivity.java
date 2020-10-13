@@ -3,16 +3,19 @@ package com.hamza.veterinarysystemdemo.SettingsActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -29,6 +32,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.hamza.veterinarysystemdemo.IPADDRESS;
 import com.hamza.veterinarysystemdemo.R;
+import com.hamza.veterinarysystemdemo.Session.SessionDetails;
+import com.hamza.veterinarysystemdemo.Session.UserSessionManager;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -48,15 +53,19 @@ public class SettingsActivity extends AppCompatActivity {
 
     private EditText name, phone, email, address;
     private Button updateProfile;
-    String getProfile_URL = "", updateprofile_url = "", Name, Email, Addess, PhoneNo, ProfileLink, saveCurrentDate, saveCurrentTime, ImageLink = "", userprofileID, profileRandomKey, newImageLink;
+    String getProfile_URL = "", updateprofile_url = "", Name, Email, Addess, PhoneNo, ProfileLink, saveCurrentDate, saveCurrentTime, ImageLink = "", profileRandomKey, newImageLink;
     private CircleImageView profileImage;
+    int userID;
     private static int GALLERY_PICK = 1;
     private StorageReference userProfileImage;
-    private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
     private IPADDRESS ipaddress;
     PrettyDialog prettyDialog;
     private Toolbar mToolbar;
+    UserSessionManager userSessionManager;
+    SessionDetails sessionDetails;
+    String emailTest;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +73,14 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         mToolbar = findViewById(R.id.settings_toolbar);
+        name = findViewById(R.id.edt_update_name);
+        phone = findViewById(R.id.edt_update_phone);
+        email = findViewById(R.id.edt_update_email);
+        address = findViewById(R.id.edt_update_address);
+        updateProfile = findViewById(R.id.btn_update_profile);
+        profileImage = findViewById(R.id.Settings_profile_image);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Profile Settings");
+        getSupportActionBar().setTitle(R.string.profileSettings);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -77,23 +92,27 @@ public class SettingsActivity extends AppCompatActivity {
         }
         ipaddress = new IPADDRESS();
         String ip = ipaddress.getIpaddress();
-        getProfile_URL = "http://www.veterinarysystem.ga/getprofile.php";
-        updateprofile_url = "http://www.veterinarysystem.ga/updateprofile.php";
+        //getProfile_URL = "http://www.veterinarysystem.ga/getprofile.php";
+        //updateprofile_url = "http://www.veterinarysystem.ga/updateprofile.php";
+        getProfile_URL="http://" + ip + "/VeterinarySystem/getprofile.php";
+        updateprofile_url="http://" + ip + "/VeterinarySystem/updateprofile.php";
 
         progressDialog = new ProgressDialog(this);
+        userSessionManager=new UserSessionManager(this);
+        sessionDetails=userSessionManager.getSessionDetails();
         userProfileImage = FirebaseStorage.getInstance().getReference().child("Profile Images");
-        mAuth = FirebaseAuth.getInstance();
-        profileRandomKey = mAuth.getCurrentUser().getUid();
 
 
-        name = findViewById(R.id.edt_update_name);
-        phone = findViewById(R.id.edt_update_phone);
-        email = findViewById(R.id.edt_update_email);
-        address = findViewById(R.id.edt_update_address);
-        updateProfile = findViewById(R.id.btn_update_profile);
-        profileImage = findViewById(R.id.Settings_profile_image);
-        userprofileID = getIntent().getExtras().get("profileid").toString();
-        getProfile();
+
+        emailTest=sessionDetails.getEmailAddress();
+
+        name.setText(sessionDetails.getName());
+        phone.setText(sessionDetails.getPhone());
+        email.setText(emailTest);
+        address.setText(sessionDetails.getAddress());
+        Picasso.get().load(sessionDetails.getProfilepicture()).into(profileImage);
+        userID=sessionDetails.getId();
+        ImageLink=sessionDetails.getProfilepicture();
 
 
         profileImage.setOnClickListener(new View.OnClickListener() {
@@ -137,10 +156,10 @@ public class SettingsActivity extends AppCompatActivity {
                 saveCurrentDate = currentDate.format(calFordDate.getTime());
 
                 Calendar calFordTime = Calendar.getInstance();
-                SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:aa");
                 saveCurrentTime = currentTime.format(calFordTime.getTime());
 
-                String key = profileRandomKey + saveCurrentTime + saveCurrentDate;
+                String key =  saveCurrentTime + saveCurrentDate;
 
                 final StorageReference filePath = userProfileImage.child(key + ".jpg");
                 filePath.putFile(resultUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -168,57 +187,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         }
     }
-
-    private void getProfile() {
-
-        StringRequest getProfileRequest = new StringRequest(Request.Method.POST, getProfile_URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-
-                    JSONObject jsonObject = new JSONObject(response);
-                    String gname = jsonObject.getString("name");
-                    String gemail = jsonObject.getString("email");
-                    String gaddress = jsonObject.getString("address");
-                    String gprofileimage = jsonObject.getString("profileimage");
-                    String gphone = jsonObject.getString("phone");
-
-                    name.setText(gname);
-                    phone.setText(gphone);
-                    address.setText(gaddress);
-                    email.setText(gemail);
-                    Picasso.get().load(gprofileimage).into(profileImage);
-
-                    Email = gemail;
-                    Name = gname;
-                    Addess = gaddress;
-                    ProfileLink = gprofileimage;
-                    PhoneNo = gphone;
-
-
-                } catch (Exception e) {
-
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> getProfileMap = new HashMap<>();
-                getProfileMap.put("uid", userprofileID);
-                return getProfileMap;
-            }
-        };
-        Volley.newRequestQueue(this).add(getProfileRequest);
-
-    }
-
     private void updateProfile() {
         Name = name.getText().toString();
         Addess = address.getText().toString();
@@ -226,21 +194,21 @@ public class SettingsActivity extends AppCompatActivity {
         Email = email.getText().toString();
 
         if (TextUtils.isEmpty(Name) && TextUtils.isEmpty(Addess) && TextUtils.isEmpty(PhoneNo) && TextUtils.isEmpty(Email)) {
-            name.setError("Please Enter Name");
-            address.setError("Please Enter Address");
-            phone.setError("Please Enter Phone No");
-            email.setError("Please Enter Email");
+            name.setError(getResources().getString(R.string.pleaseEnterName));
+            address.setError(getResources().getString(R.string.pleaseEnterAddress));
+            phone.setError(getResources().getString(R.string.pleaseEnterPhoneNo));
+            email.setError(getResources().getString(R.string.pleaseEnterEmail));
         } else if (TextUtils.isEmpty(Name)) {
-            name.setError("Please Enter Name");
+            name.setError(getResources().getString(R.string.pleaseEnterName));
 
         } else if (TextUtils.isEmpty(Addess)) {
-            address.setError("Please Enter Address");
+            address.setError(getResources().getString(R.string.pleaseEnterAddress));
 
         } else if (TextUtils.isEmpty(PhoneNo)) {
-            phone.setError("Please Enter Phone No");
+            phone.setError(getResources().getString(R.string.pleaseEnterPhoneNo));
 
         } else if (TextUtils.isEmpty(Email)) {
-            email.setError("Please Enter Email");
+            email.setError(getResources().getString(R.string.pleaseEnterEmail));
         } else {
 
             if (ImageLink.equals("")) {
@@ -249,8 +217,9 @@ public class SettingsActivity extends AppCompatActivity {
                 newImageLink = ImageLink;
             }
 
-            progressDialog.setTitle("Updating Account");
-            progressDialog.setMessage("Please Wait....");
+            progressDialog.setTitle(getResources().getString(R.string.updatingAccount));
+            progressDialog.setMessage(getResources().getString(R.string.pleaseWait));
+            progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
 
             StringRequest updateProfileRequest = new StringRequest(Request.Method.POST, updateprofile_url, new Response.Listener<String>() {
@@ -261,15 +230,20 @@ public class SettingsActivity extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(response);
                         Boolean status = jsonObject.getBoolean("status");
                         if (status) {
-
+                            sessionDetails.setName(Name);
+                            sessionDetails.setEmailAddress(Email);
+                            sessionDetails.setAddress(Addess);
+                            sessionDetails.setPhone(PhoneNo);
+                            sessionDetails.setProfilepicture(newImageLink);
+                            sessionDetails.setId(userID);
+                            userSessionManager.setSessionDetails(sessionDetails);
                             new PrettyDialog(SettingsActivity.this)
-                                    .setTitle("Status")
-                                    .setMessage("Successfully Updated Your Account")
-                                    .setIcon(R.drawable.appplus).addButton("Done", R.color.loginBackgroundcolor, R.color.design_default_color_primary_dark, new PrettyDialogCallback() {
+                                    .setTitle(getResources().getString(R.string.status))
+                                    .setMessage(getResources().getString(R.string.successfullyUpdatedYourAccount))
+                                    .setIcon(R.drawable.appplus).addButton(getResources().getString(R.string.Done), R.color.loginBackgroundcolor, R.color.design_default_color_primary_dark, new PrettyDialogCallback() {
                                 @Override
                                 public void onClick() {
                                     Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                                    intent.putExtra("profileid", userprofileID);
                                     startActivity(intent);
                                     finish();
                                 }
@@ -277,6 +251,7 @@ public class SettingsActivity extends AppCompatActivity {
                         }
 
                     } catch (Exception e) {
+                      //  Toast.makeText(SettingsActivity.this, "Exception: "+e.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
 
@@ -285,6 +260,7 @@ public class SettingsActivity extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     progressDialog.dismiss();
+                   // Toast.makeText(SettingsActivity.this, "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }) {
                 @Override
@@ -295,7 +271,7 @@ public class SettingsActivity extends AppCompatActivity {
                     updateprofileMap.put("address", Addess);
                     updateprofileMap.put("profilepic", newImageLink);
                     updateprofileMap.put("email", Email);
-                    updateprofileMap.put("userid", userprofileID);
+                    updateprofileMap.put("userid", String.valueOf(userID));
                     return updateprofileMap;
                 }
             };

@@ -5,52 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SplashScreenActivity"
-    android:background="@drawable/splashbg"
+    android:background="#000"
     >
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_centerInParent="true"
-        android:paddingBottom="160dp"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="Veterinary"
-            android:textStyle="bold|italic"
-            android:textSize="50sp"
-            android:fontFamily="serif-monospace"
-            android:textColor="@android:color/white"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="System"
-            android:textStyle="bold|italic"
-            android:textSize="50sp"
-            android:fontFamily="serif-monospace"
-            android:textColor="@android:color/white"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="DOCTOR On Your Doorstep"
-            android:textStyle="italic|bold"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="20sp"
-            android:layout_height="wrap_content" />
-
-        <com.github.ybq.android.spinkit.SpinKitView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/spin_kit"
-            android:layout_margin="20dp"
-            style="@style/SpinKitView.Large.Circle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:SpinKit_Color="@color/colorAccent" />
-    </LinearLayout>
-
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/newblackgolden"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        />
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/spin_kit"
+        style="@style/SpinKitView.Large.Wave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:SpinKit_Color="@color/golden"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
+        />
 
 </RelativeLayout>

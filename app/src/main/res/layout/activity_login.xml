@@ -1,184 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/loginBackgroundcolor"
+    android:background="@color/pdlg_color_gray"
     tools:context=".LoginActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:paddingLeft="60dp"
-        android:paddingRight="60dp">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
             android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp">
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/usrusr"
-                    android:layout_gravity="center"/>
-                <EditText
-                    android:id="@+id/edtlogEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Email"
-                    android:textColorHint="#000000"
-                    android:layout_marginLeft="15dp"
-                    android:background="#00000000"
-                    android:letterSpacing="0.1"
-                    android:textSize="16dp"
-                    android:inputType="text"
-                    android:textColor="#fff"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#4a5a71"></LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp">
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/pswrd"
-                    android:layout_gravity="center"/>
-                <EditText
-                    android:id="@+id/edtlogpassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Password"
-                    android:textColorHint="#000000"
-                    android:layout_marginLeft="15dp"
-                    android:background="#00000000"
-                    android:inputType="textPassword"
-                    android:letterSpacing="0.1"
-                    android:textSize="16dp"
-                    android:textColor="#fff"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#4a5a71"></LinearLayout>
 
-            <LinearLayout
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/goldencropicon"
+
+                />
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="150dp"
+                android:fontFamily="@font/novasquare"
+                android:text="E-Veterinary System"
+                android:textAlignment="center"
+                android:textColor="@color/goldish"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtlogEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/input_style"
+                android:drawableLeft="@drawable/ic_phone_android_black_24dp"
+                android:fontFamily="@font/novasquare"
+                android:hint="@string/Email"
+                android:inputType="textEmailAddress"
+                android:padding="10dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtlogpassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/input_style"
+                android:drawableLeft="@drawable/ic_lock_open_black_24dp"
+                android:fontFamily="@font/novasquare"
+                android:hint="@string/Password"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+
+            <RadioGroup
+                android:id="@+id/rgLoginType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
                 android:orientation="horizontal"
-                android:padding="16dp">
-                <RadioGroup
-                    android:layout_width="match_parent"
-                    android:id="@+id/rgLoginType"
+                android:weightSum="3">
+
+                <RadioButton
+                    android:id="@+id/rbClient"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:fontFamily="@font/novasquare"
                     android:gravity="center"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:id="@+id/rbClient"
-                        android:checked="true"
-                        android:text="Client"
-                        android:textSize="14sp"
-                        android:textColor="#000000"
-                        android:padding="10dp"
-                        android:layout_height="wrap_content" />
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:text="Store"
-                        android:textColor="#000000"
-                        android:id="@+id/rbStore"
-                        android:padding="10dp"
-                        android:textSize="14sp"
-                        android:layout_height="wrap_content" />
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:text="Doctor"
-                        android:textColor="#000000"
-                        android:id="@+id/rbDoctor"
-                        android:padding="4dp"
-                        android:textSize="15sp"
-                        android:layout_height="wrap_content" />
-                </RadioGroup>
-            </LinearLayout>
+                    android:text="@string/Client"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
+                <RadioButton
+                    android:id="@+id/rbStore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/novasquare"
+                    android:gravity="center"
+                    android:text="@string/Store"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/rbDoctor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/novasquare"
+                    android:gravity="center"
+                    android:text="@string/Doctor"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btnlogin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/button_style"
+                android:fontFamily="@font/novasquare"
+                android:text="@string/SignIn"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btnForgetPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="25dp"
+                android:fontFamily="@font/novasquare"
+                android:text="@string/forgetpassword"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnlogsignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="9dp"
+                android:background="@drawable/button_style"
+                android:fontFamily="@font/novasquare"
+                android:padding="5dp"
+                android:text="@string/SignUp"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
         </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="60dp"
-        android:paddingRight="60dp"
-        android:orientation="vertical"
-        android:gravity="bottom"
-        android:layout_marginBottom="20dp">
-        <TextView
-            android:id="@+id/btnlogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#000000"
-            android:text="Login"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_gravity="bottom"
-            android:padding="16dp"
-            android:layout_marginBottom="50dp"
-            android:letterSpacing="0.2"/>
-        <!-- <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="5dp"
-            android:gravity="bottom"
-            ></LinearLayout> -->
-        <TextView
-            android:id="@+id/btnlogsignup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Create Account ? Signup"
-            android:textColor="#000000"
-            android:letterSpacing="0.1"/>
-        <TextView
-            android:id="@+id/linebetween"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="-----------------------------------"
-            android:textColor="#000000"
-            android:letterSpacing="0.1"/>
 
-        <TextView
-            android:id="@+id/btnForgetPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Forget Password"
-            android:textColor="#000000"
-            android:letterSpacing="0.1"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_marginBottom="400dp">
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/loginscreenicon"
-            />
-    </LinearLayout>
 
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

@@ -4,14 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/pdlg_color_gray"
     tools:context=".user_doctor_Activity.User_doctor_appointment_Activity">
 
     <include
         android:id="@+id/user_doctor_appointment_toolbar"
-        layout="@layout/toolbar_for_all"></include>
+        layout="@layout/toolbar_for_all">
+
+    </include>
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
     android:orientation="vertical"
     android:id="@+id/linearUDA"
@@ -19,31 +22,60 @@
     android:layout_below="@id/user_doctor_appointment_toolbar"
     >
 
-    <Spinner
+    <com.jaredrummler.materialspinner.MaterialSpinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/sp_city_doc_uda"
-        android:layout_weight="1"
-        android:gravity="center"
+        app:ms_background_color="@color/goldish"
+        app:ms_arrow_tint="@color/pdlg_color_red"
+        app:ms_text_color="#fff"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:textAlignment="center"
+        android:padding="8dp"
+        android:textSize="18sp"
+        />
 
-        android:layout_below="@id/user_doctor_appointment_toolbar"
-        ></Spinner>
-    <Spinner
+
+    <com.jaredrummler.materialspinner.MaterialSpinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:gravity="center"
         android:id="@+id/sp_tehsile_doc_uda"
-        android:layout_below="@id/sp_city_doc_uda"
-        android:layout_weight="1"
-        ></Spinner>
+        app:ms_background_color="@color/goldish"
+        app:ms_arrow_tint="@color/pdlg_color_red"
+        app:ms_text_color="#fff"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:visibility="invisible"
+        android:textAlignment="center"
+        android:padding="8dp"
+        android:textSize="18sp"
+        />
+
 
 </LinearLayout>
-    <android.support.v7.widget.RecyclerView
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/uda_loading"
+        style="@style/SpinKitView.Large.Circle"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/loading_background"
+        app:SpinKit_Color="@color/goldish"
+        android:visibility="gone"
+        />
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_uda"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/linearUDA"
-        android:layout_marginTop="8dp"></android.support.v7.widget.RecyclerView>
+        android:layout_marginTop="8dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </RelativeLayout>

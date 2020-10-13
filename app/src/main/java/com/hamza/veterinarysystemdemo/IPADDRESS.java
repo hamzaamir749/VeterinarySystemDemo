@@ -5,7 +5,7 @@ public class IPADDRESS {
     String ipaddress;
 
     public IPADDRESS() {
-        this.ipaddress = "192.168.10.9";
+        this.ipaddress = "www.loadinadmin.tk/veterinary";
     }
 
     public String getIpaddress() {

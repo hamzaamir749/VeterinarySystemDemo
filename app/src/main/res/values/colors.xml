@@ -3,10 +3,19 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="loginBackgroundcolor">#D3A10B</color>
+    <color name="loginBackgroundcolor">#17EB21</color>
     <color name="btn_update_color" >#F1372A</color>
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="colorAccent2">#ccb505</color>
     <color name="colorPrimary2">#181a1e</color>
     <color name="orange_color">#E0410F</color>
+
+
+    <color name="red">#FF0000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="ic_launcher_background">#2D4E73</color>
+
+    <color name="golden">#F39408</color>
+    <color name="goldish">#FFC107</color>
+    <color name="transparant">#5B4E464B</color>
 </resources>

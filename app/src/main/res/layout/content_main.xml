@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
-    android:background="@color/pdlg_color_white"
+    android:background="@color/pdlg_color_gray"
     tools:showIn="@layout/app_bar_main">
 
+    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main_loading"
+        style="@style/SpinKitView.Large.Circle"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/loading_background"
+        app:SpinKit_Color="@color/goldish"
 
-    <android.support.v7.widget.RecyclerView
+        />
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_admin_posts_user"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-    </android.support.v7.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

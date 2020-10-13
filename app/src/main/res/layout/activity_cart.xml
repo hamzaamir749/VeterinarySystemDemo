@@ -1,13 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:background="@color/pdlg_color_gray">
 
     <include
         android:id="@+id/toolbar_for_cart_activity"
         layout="@layout/toolbar_for_all"></include>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lvCartItems"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,15 +29,16 @@
     <LinearLayout
         android:id="@+id/checkoutLayout"
         android:layout_width="match_parent"
-        android:background="@color/pdlg_color_yellow"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
+        android:background="@color/golden"
         android:orientation="vertical">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:gravity="end"
@@ -47,22 +48,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
+                android:layout_marginLeft="5dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
-                android:text="Total:"
-                android:textSize="18sp" />
+                android:text="@string/total"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvTotalPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
+                android:layout_marginLeft="5dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
                 android:text="Rs. 10"
-                android:textColor="@android:color/holo_blue_dark"
+                android:textColor="@android:color/black"
                 android:textSize="25sp" />
 
             <Button
@@ -71,9 +76,9 @@
                 android:layout_height="40dp"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="5dp"
-                android:background="@color/btn_update_color"
-                android:text="Checkout"
-                android:textColor="@android:color/white"
+                android:background="@drawable/button_style"
+                android:text="@string/checkout"
+                android:textColor="@android:color/black"
                 android:textSize="18sp" />
         </LinearLayout>
 

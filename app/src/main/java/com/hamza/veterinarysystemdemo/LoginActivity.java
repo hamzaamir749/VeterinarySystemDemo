@@ -2,10 +2,11 @@ package com.hamza.veterinarysystemdemo;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -13,13 +14,17 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.hamza.veterinarysystemdemo.DoctorSection.DoctorDrawerActivity;
+import com.hamza.veterinarysystemdemo.Session.UserSessionManager;
+import com.hamza.veterinarysystemdemo.StoreSection.StoreDrawerActivity;
+import com.hamza.veterinarysystemdemo.Session.SessionDetails;
+import com.hamza.veterinarysystemdemo.UserSection.PhoneVerificationsActivity.PhoneVerificationActivity;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -27,13 +32,13 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private TextView forgetPassword,signUp,login;
+    private TextView forgetPassword,login;
+    Button signUp;
     private EditText Email,Password;
     private RadioButton rbDoctor,rbCient,rbStore;
     private String loginType=null;
     IPADDRESS ipaddress;
-    public String name,category,address,phoneno,profilepic,login_URL;
-    private int id;
+    public String name,address,login_URL,saveToken_URL;
     String ip;
     private ProgressDialog progressDialog;
     private  JSONObject jsonObject;
@@ -44,7 +49,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ipaddress=new IPADDRESS();
         ip=ipaddress.getIpaddress();
-        login_URL="http://www.veterinarysystem.ga/login.php";
+        login_URL="http://" + ip + "/VeterinarySystem/login.php";
+        saveToken_URL="http://" + ip + "/VeterinarySystem/getToken.php";
+        //login_URL="http://www.veterinarysystem.ga/login.php";
+        //saveToken_URL="http://www.veterinarysystem.ga/getToken.php";
 
         signUp=findViewById(R.id.btnlogsignup);
         forgetPassword=findViewById(R.id.btnForgetPassword);
@@ -55,8 +63,8 @@ public class LoginActivity extends AppCompatActivity {
         Email=findViewById(R.id.edtlogEmail);
         Password=findViewById(R.id.edtlogpassword);
         progressDialog=new ProgressDialog(this);
-        Email.setText("hamzaamir749@gmail.com");
-        Password.setText("03072039383");
+       // Email.setText("hamzaamir749@gmail.com");
+        //Password.setText("03072039383");
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,18 +91,18 @@ public class LoginActivity extends AppCompatActivity {
     private void LoginFunction() {
 
         ipaddress.getIpaddress();
-        String email=Email.getText().toString().trim();
+        String emaill=Email.getText().toString().trim();
         String password=Password.getText().toString().trim();
-        if (TextUtils.isEmpty(email) && TextUtils.isEmpty(password))
+        if (TextUtils.isEmpty(emaill) && TextUtils.isEmpty(password))
         {
-            Password.setError("Please Enter Password");
-            Email.setError("Please Enter Email");
-        } else if (TextUtils.isEmpty(email))
+            Password.setError(getResources().getString(R.string.pleaseEnterPassword));
+            Email.setError(getResources().getString(R.string.pleaseEnterEmail));
+        } else if (TextUtils.isEmpty(emaill))
         {
-            Email.setError("Please Enter Email");
+            Email.setError(getResources().getString(R.string.pleaseEnterEmail));
         } else if (TextUtils.isEmpty(password))
         {
-            Password.setError("Please Enter Password");
+            Password.setError(getResources().getString(R.string.pleaseEnterPassword));
         } else
         {
             if (rbCient.isChecked())
@@ -107,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                 loginType="2";
             }
 
-                checkLoginDetails(email,password);
+                checkLoginDetails(emaill,password);
 
         }
 
@@ -115,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
       // onlyDirectActivity();
     }
 
-    private void checkLoginDetails(final String email, final String password) {
+    private void checkLoginDetails(final String emaill, final String password) {
 
         progressDialog.setTitle(R.string.PDLoginTital);
         progressDialog.setMessage(getResources().getString(R.string.PDLoginMessage));
@@ -126,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 progressDialog.dismiss();
                try {
+                   SessionDetails sessionDetails =new SessionDetails();
                    jsonObject=new JSONObject(response);
                    String GCategory=jsonObject.getString("usercategory");
                    String success=jsonObject.getString("success");
@@ -139,17 +148,20 @@ public class LoginActivity extends AppCompatActivity {
                            String cProfilepic=jsonObject.getString("profileimage");
                            String  cAddress=jsonObject.getString("address");
                            String  cPhoneno=jsonObject.getString("phone");
+                           String cEmail=jsonObject.getString("email");
 
-                           ClientSessionDetails clientSessionDetails=new ClientSessionDetails();
-                           clientSessionDetails.setId(cId);
-                           clientSessionDetails.setAddress(cAddress);
-                           clientSessionDetails.setName(cName);
-                           clientSessionDetails.setPhone(cPhoneno);
-                           clientSessionDetails.setProfilepicture(cProfilepic);
-                           UserSessionManager userSessionManager=new UserSessionManager(LoginActivity.this);
-                           userSessionManager.setClientLoggedIn(true);
-                           userSessionManager.setClientDataDetails(clientSessionDetails);
+                           sessionDetails.setId(cId);
+                           sessionDetails.setAddress(cAddress);
+                           sessionDetails.setName(cName);
+                           sessionDetails.setPhone(cPhoneno);
+                           sessionDetails.setProfilepicture(cProfilepic);
+                           sessionDetails.setEmailAddress(cEmail);
+                           sessionDetails.setType("user");
+                           UserSessionManager clientSessionManager=new UserSessionManager(LoginActivity.this);
+                           clientSessionManager.setLoggedIn(true);
+                           clientSessionManager.setSessionDetails(sessionDetails);
 
+                           saveTokenToDatabase(cId);
                            SendUserToCLientActivity();
 
                        } else if (GCategory.equals("1"))
@@ -160,16 +172,19 @@ public class LoginActivity extends AppCompatActivity {
                            String sProfilepic=jsonObject.getString("profileimage");
                            String  sAddress=jsonObject.getString("address");
                            String  sPhoneno=jsonObject.getString("phone");
+                           String sEmail=jsonObject.getString("email");
 
-                           StoreSessionDetails storeSessionDetails=new StoreSessionDetails();
-                           storeSessionDetails.setId(sId);
-                           storeSessionDetails.setAddress(sAddress);
-                           storeSessionDetails.setName(sName);
-                           storeSessionDetails.setPhone(sPhoneno);
-                           storeSessionDetails.setProfilepicture(sProfilepic);
+                           sessionDetails.setId(sId);
+                           sessionDetails.setAddress(sAddress);
+                           sessionDetails.setName(sName);
+                           sessionDetails.setPhone(sPhoneno);
+                           sessionDetails.setProfilepicture(sProfilepic);
+                           sessionDetails.setEmailAddress(sEmail);
+                           sessionDetails.setType("store");
                            UserSessionManager storeSessionManager=new UserSessionManager(LoginActivity.this);
-                           storeSessionManager.setStoreLoggedIn(true);
-                           storeSessionManager.setStoreDataDetails(storeSessionDetails);
+                           storeSessionManager.setLoggedIn(true);
+                           storeSessionManager.setSessionDetails(sessionDetails);
+                           saveTokenToDatabase(sId);
                            SendUserToStoreActivity();
 
                        }
@@ -180,25 +195,37 @@ public class LoginActivity extends AppCompatActivity {
                            String dProfilepic=jsonObject.getString("profileimage");
                            String  dAddress=jsonObject.getString("address");
                            String  dPhoneno=jsonObject.getString("phone");
-                           DoctorSessionDetails doctorSessionDetails=new DoctorSessionDetails();
-                           doctorSessionDetails.setId(dId);
-                           doctorSessionDetails.setAddress(dAddress);
-                           doctorSessionDetails.setName(dName);
-                           doctorSessionDetails.setPhone(dPhoneno);
-                           doctorSessionDetails.setProfilepicture(dProfilepic);
+                           String dEmail=jsonObject.getString("email");
+
+                           sessionDetails.setId(dId);
+                           sessionDetails.setAddress(dAddress);
+                           sessionDetails.setName(dName);
+                           sessionDetails.setPhone(dPhoneno);
+                           sessionDetails.setProfilepicture(dProfilepic);
+                           sessionDetails.setEmailAddress(dEmail);
+                           sessionDetails.setType("doctor");
                            UserSessionManager doctorSessionManager=new UserSessionManager(LoginActivity.this);
-                           doctorSessionManager.setDoctorLoggedIn(true);
-                           doctorSessionManager.setDoctorDataDetails(doctorSessionDetails);
+                           doctorSessionManager.setLoggedIn(true);
+                           doctorSessionManager.setSessionDetails(sessionDetails);
+                           saveTokenToDatabase(dId);
                            SendUserToDoctorActivity();
 
                        }
 
 
                    }
+                   else
+                   {
+                       Email.setError("Please Check");
+                       Password.setError("Please Check");
+                      // Toast.makeText(LoginActivity.this, getResources().getString(R.string.pleaseGiveCorrectinfo), Toast.LENGTH_SHORT).show();
+                   }
 
                } catch (Exception e)
                {
-                   Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                   Email.setError("Please Check");
+                   Password.setError("Please Check");
+                   //Toast.makeText(getApplicationContext(),"Exception: "+e.getMessage(),Toast.LENGTH_SHORT).show();
                }
 
             }
@@ -206,14 +233,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(),error.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Volley: "+error.getMessage(),Toast.LENGTH_SHORT).show();
 
             }
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> loginMap=new HashMap<>();
-                loginMap.put("email",email);
+                loginMap.put("email",emaill);
                 loginMap.put("password",password);
                 loginMap.put("loginType",loginType);
                 return loginMap;
@@ -223,14 +250,39 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    private void saveTokenToDatabase(final int Id) {
+        final String token= FirebaseInstanceId.getInstance().getToken();
+
+        StringRequest saveTokenRequest=new StringRequest(Request.Method.POST, saveToken_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> saveTokenMap=new HashMap<>();
+                saveTokenMap.put("token",token);
+                saveTokenMap.put("uid",String.valueOf(Id));
+                return saveTokenMap;
+            }
+        };
+        Volley.newRequestQueue(this).add(saveTokenRequest);
+    }
+
     private void SendUserToDoctorActivity() {
-        Intent dIntent=new Intent(getApplicationContext(),DoctorDrawerActivity.class);
+        Intent dIntent=new Intent(getApplicationContext(), DoctorDrawerActivity.class);
         dIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(dIntent);
     }
 
     private void SendUserToStoreActivity() {
-        Intent sIntent=new Intent(getApplicationContext(),StoreDrawerActivity.class);
+        Intent sIntent=new Intent(getApplicationContext(), StoreDrawerActivity.class);
         sIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(sIntent);
     }
@@ -253,7 +305,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void sendUserToSignUpActivity() {
-        Intent signUpIntent=new Intent(getApplicationContext(),RegisterActivity.class);
+        Intent signUpIntent=new Intent(getApplicationContext(), PhoneVerificationActivity.class);
         startActivity(signUpIntent);
     }
 }

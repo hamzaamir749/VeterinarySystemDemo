@@ -3,8 +3,8 @@ package com.hamza.veterinarysystemdemo.CartPackage;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hamza.veterinarysystemdemo.R;
-import com.hamza.veterinarysystemdemo.RegisterActivity;
-import com.hamza.veterinarysystemdemo.UserSessionManager;
-import com.hamza.veterinarysystemdemo.adapters.commentsAdapter;
+import com.hamza.veterinarysystemdemo.Session.UserSessionManager;
 import com.hamza.veterinarysystemdemo.models.userMedicineListModel;
 import com.squareup.picasso.Picasso;
 
@@ -58,9 +56,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.modelViewHolde
             public void onClick(View v) {
 
                 new PrettyDialog(mContext)
-                        .setTitle("Remove")
-                        .setMessage("Are you sure??")
-                        .setIcon(R.drawable.appplus).addButton("Yes", R.color.loginBackgroundcolor, R.color.design_default_color_primary_dark, new PrettyDialogCallback() {
+                        .setTitle(mContext.getResources().getString(R.string.Remove))
+                        .setMessage(mContext.getResources().getString(R.string.areyousure))
+                        .setIcon(R.drawable.appplus).addButton(mContext.getResources().getString(R.string.yes), R.color.loginBackgroundcolor, R.color.design_default_color_primary_dark, new PrettyDialogCallback() {
                     @Override
                     public void onClick() {
                         UserSessionManager.cart.removeFromCart(product);
@@ -70,7 +68,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.modelViewHolde
 
 
                     }
-                }).addButton("No", R.color.loginBackgroundcolor, R.color.design_default_color_primary_dark, new PrettyDialogCallback() {
+                }).addButton(mContext.getResources().getString(R.string.no), R.color.loginBackgroundcolor, R.color.design_default_color_primary_dark, new PrettyDialogCallback() {
                     @Override
                     public void onClick() {
                         Intent intent = new Intent(mContext.getApplicationContext(), CartActivity.class);

@@ -5,22 +5,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
+import com.github.ybq.android.spinkit.style.ChasingDots;
+import com.github.ybq.android.spinkit.style.Circle;
+import com.google.android.material.navigation.NavigationView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -30,11 +37,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.hamza.veterinarysystemdemo.AboutUs.AboutUSActivity;
 import com.hamza.veterinarysystemdemo.CartPackage.CartActivity;
+import com.hamza.veterinarysystemdemo.MedicineActivity.MedicineListActivity;
+import com.hamza.veterinarysystemdemo.Session.UserSessionManager;
 import com.hamza.veterinarysystemdemo.SettingsActivity.SettingsActivity;
-import com.hamza.veterinarysystemdemo.adapters.AdminPostsAdapterEnglish;
-import com.hamza.veterinarysystemdemo.adapters.AdminPostsAdapterUrdu;
-import com.hamza.veterinarysystemdemo.models.AdminPostsModel;
+import com.hamza.veterinarysystemdemo.AdminPostsActivity.AdminPostsAdapterEnglish;
+import com.hamza.veterinarysystemdemo.AdminPostsActivity.AdminPostsAdapterUrdu;
+import com.hamza.veterinarysystemdemo.AdminPostsActivity.AdminPostsModel;
+import com.hamza.veterinarysystemdemo.Session.SessionDetails;
+import com.hamza.veterinarysystemdemo.UserSection.Growth.GrowthAnimalListActivity;
+import com.hamza.veterinarysystemdemo.UserSection.HistoryActivity;
 import com.hamza.veterinarysystemdemo.user_doctor_Activity.User_doctor_appointment_Activity;
 import com.squareup.picasso.Picasso;
 
@@ -42,9 +55,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import libs.mjn.prettydialog.PrettyDialog;
@@ -57,10 +71,9 @@ public class MainActivity extends AppCompatActivity
     private TextView HeaderName;
     private CircleImageView HeaderProfileImage;
     private UserSessionManager userSessionManager;
-    ClientSessionDetails clientSessionDetails;
+    SessionDetails sessionDetails;
     private String UserNameHeader, ProfileHeaderPic, getAdminPost_url, lang;
     //String ChangeLanguage;
-    private FirebaseAuth auth;
     int userid;
 
     List<AdminPostsModel> adminPosts;
@@ -71,19 +84,25 @@ public class MainActivity extends AppCompatActivity
     Context context;
     RecyclerView adminPostRecycler;
     PrettyDialog prettyDialog;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadLocale();
         setContentView(R.layout.activity_main);
-        auth = FirebaseAuth.getInstance();
-        FirebAseLogIn();
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        progressBar = findViewById(R.id.main_loading);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.LatestUpdates);
+        }
+
 
         //ChangeLanguage = String.valueOf(R.string.ChangeLanguage);
         userSessionManager = new UserSessionManager(this);
-        clientSessionDetails = userSessionManager.getClientDataDetails();
-        prettyDialog=new PrettyDialog(this);
+        sessionDetails = userSessionManager.getSessionDetails();
+        prettyDialog = new PrettyDialog(this);
 
         HeaderName = findViewById(R.id.nav_main_header_name);
         HeaderProfileImage = findViewById(R.id.nav_main_header_profile);
@@ -92,26 +111,23 @@ public class MainActivity extends AppCompatActivity
 
         ipaddress = new IPADDRESS();
         String ip = ipaddress.getIpaddress();
-        getAdminPost_url = "http://www.veterinarysystem.ga/getproblems.php";
+        //getAdminPost_url = "http://www.veterinarysystem.ga/getadminpost.php";
+        getAdminPost_url="http://" + ip + "/VeterinarySystem/getadminpost.php";
 
         adminPosts = new ArrayList<>();
 
         context = this;
         linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
         adminPostRecycler.setLayoutManager(linearLayoutManager);
         adminPostRecycler.setHasFixedSize(true);
 
 
-        UserNameHeader = clientSessionDetails.getName();
-        ProfileHeaderPic = clientSessionDetails.getProfilepicture();
-        userid = clientSessionDetails.getId();
+        UserNameHeader = sessionDetails.getName();
+        ProfileHeaderPic = sessionDetails.getProfilepicture();
+        userid = sessionDetails.getId();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.LatestUpdates);
-        }
+       // Toast.makeText(getApplicationContext(),lang,Toast.LENGTH_LONG).show();
 
         /* FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -134,23 +150,11 @@ public class MainActivity extends AppCompatActivity
         HeaderName = headerView.findViewById(R.id.nav_main_header_name);
         HeaderProfileImage = headerView.findViewById(R.id.nav_main_header_profile);
         setNavHeader();
+        progressBar.setIndeterminateDrawable(new Circle());
         getAllPosts();
 
     }
 
-    private void FirebAseLogIn() {
-        auth.signInWithEmailAndPassword("hamzaamir749@gmail.com", "123456").addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-
-                } else {
-                    Toast.makeText(MainActivity.this, "FireBaseNotLogggedIn: " + task.getException().getMessage().toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-    }
 
     private void setNavHeader() {
         HeaderName.setText(UserNameHeader);
@@ -173,6 +177,14 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences sharedPreferences = getSharedPreferences("langSetting", Activity.MODE_PRIVATE);
+        lang = sharedPreferences.getString("my_lang", "en");
+
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -203,17 +215,30 @@ public class MainActivity extends AppCompatActivity
 
             return true;
         } else if (id == R.id.dots_mainUser_contacts) {
+            SendUserToAboutUsActivity();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void SendUserToAboutUsActivity() {
+        Intent intent=new Intent(getApplicationContext(), AboutUSActivity.class);
+        startActivity(intent);
+    }
+
     private void setLocale(String language) {
         Locale locale = new Locale(language);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
-        config.locale = locale;
+       if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN_MR1)
+       {
+           config.setLocale(locale);
+       }
+       else
+       {
+           config.locale = locale;
+       }
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         SharedPreferences.Editor editor = getSharedPreferences("langSetting", MODE_PRIVATE).edit();
         editor.putString("my_lang", language);
@@ -222,52 +247,60 @@ public class MainActivity extends AppCompatActivity
 
     private void loadLocale() {
         SharedPreferences sharedPreferences = getSharedPreferences("langSetting", Activity.MODE_PRIVATE);
-        lang = sharedPreferences.getString("my_lang", "");
+        lang = sharedPreferences.getString("my_lang", "en");
         setLocale(lang);
 
     }
 
     private void getAllPosts() {
-        StringRequest getPostsRequest = new StringRequest(Request.Method.GET, getAdminPost_url, new Response.Listener<String>() {
+        StringRequest getPostsRequest = new StringRequest(Request.Method.POST, getAdminPost_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONArray jsonArray = jsonObject.getJSONArray("postdata");
+                    JSONArray jsonArray = jsonObject.getJSONArray("data");
                     boolean status = jsonObject.getBoolean("status");
                     if (status) {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
-                            int id = object.getInt("id");
-                            String pname = object.getString("pname");
-                            String pdes = object.getString("pdescription");
-                            String pimage = object.getString("pimage");
-                            String ppimage = object.getString("pprofileimage");
-                            String ptime = object.getString("ptime");
-                            String pdate = object.getString("pdate");
-                            AdminPostsModel Modelobj = new AdminPostsModel(id, pdes, ptime, pdate, pimage, pname, ppimage);
+
+                            int post_id = object.getInt("postid");
+                            String adminname = object.getString("adminname");
+                            String postdes = object.getString("description");
+                            String postimage = object.getString("image");
+                            String adminimage = object.getString("adminimage");
+                            String posttime = object.getString("time");
+                            String postdate = object.getString("date");
+                            AdminPostsModel Modelobj = new AdminPostsModel(post_id, postdes, posttime, postdate, postimage, adminname, adminimage);
                             adminPosts.add(Modelobj);
-                            adapterUrdu = new AdminPostsAdapterUrdu(context, adminPosts);
-                            adapterEnglish = new AdminPostsAdapterEnglish(context, adminPosts);
-                        }
-                        Collections.reverse(adminPosts);
-
-                        if (lang.equals("en")) {
-                            adminPostRecycler.setAdapter(adapterEnglish);
-
-                        } else if (lang.equals("ur")) {
-                            adminPostRecycler.setAdapter(adapterUrdu);
 
                         }
+                        progressBar.setVisibility(View.GONE);
+                      if (lang.equals("ur"))
+                      {
+                          adapterUrdu = new AdminPostsAdapterUrdu(context, adminPosts);
+                          adminPostRecycler.setAdapter(adapterUrdu);
+                      }
+                      else if (lang.equals("en"))
+                      {
+                          adapterEnglish = new AdminPostsAdapterEnglish(context, adminPosts);
+                          adminPostRecycler.setAdapter(adapterEnglish);
+                      }
+
+
+
 
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "Could not get post data", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                       // Toast.makeText(getApplicationContext(), "Could not get post data", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (Exception e) {
-                    // Toast.makeText(getApplicationContext(),"parsing exception: "+e.getMessage(),Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
+                   // Log.d("exception",e.getMessage());
+                   // Toast.makeText(getApplicationContext(),"parsing exception: "+e.getMessage(),Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -276,7 +309,15 @@ public class MainActivity extends AppCompatActivity
             public void onErrorResponse(VolleyError error) {
 
             }
-        });
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> adminMap=new HashMap<>();
+                adminMap.put("languageType",lang);
+                return adminMap;
+            }
+        };
         Volley.newRequestQueue(this).add(getPostsRequest);
     }
 
@@ -302,16 +343,16 @@ public class MainActivity extends AppCompatActivity
             SendUserToDiseasesActivity();
 
         } else if (id == R.id.nav_growth) {
+            SendUserToGrowthActivity();
 
         } else if (id == R.id.nav_cart) {
 
             SendUserToCartActivity();
 
         } else if (id == R.id.nav_Histroy) {
+            SendUserToHistoryActivity();
 
-        } else if (id == R.id.nav_manual) {
-
-        } else if (id == R.id.nav_settings) {
+        }  else if (id == R.id.nav_settings) {
 
             SendUserToSettingsActivity();
 
@@ -326,26 +367,35 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void SendUserToGrowthActivity() {
+        Intent growthIntent=new Intent(getApplicationContext(), GrowthAnimalListActivity.class);
+        startActivity(growthIntent);
+    }
+
+    private void SendUserToHistoryActivity() {
+        Intent historyIntent=new Intent(getApplicationContext(), HistoryActivity.class);
+        startActivity(historyIntent);
+    }
+
     private void SendUserToCartActivity() {
 
-        Intent cartintent=new Intent(getApplicationContext(), CartActivity.class);
+        Intent cartintent = new Intent(getApplicationContext(), CartActivity.class);
         startActivity(cartintent);
     }
 
     private void SendUserToUserDoctorAppointmentActivity() {
-        Intent UDAIntent=new Intent(getApplicationContext(), User_doctor_appointment_Activity.class);
+        Intent UDAIntent = new Intent(getApplicationContext(), User_doctor_appointment_Activity.class);
         startActivity(UDAIntent);
     }
 
     private void SendUserToMedicineActivity() {
 
-        Intent medicineIntent = new Intent(getApplicationContext(), userMedicineListActivity.class);
+        Intent medicineIntent = new Intent(getApplicationContext(), MedicineListActivity.class);
         startActivity(medicineIntent);
     }
 
     private void SendUserToSettingsActivity() {
         Intent settingsintent = new Intent(getApplicationContext(), SettingsActivity.class);
-        settingsintent.putExtra("profileid", userid);
         startActivity(settingsintent);
     }
 
@@ -360,8 +410,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void SendUserToLoginActivity() {
-        userSessionManager.setClientLoggedIn(false);
-        userSessionManager.clearClientData();
+        userSessionManager.setLoggedIn(false);
+        userSessionManager.clearSessionData();
         Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);

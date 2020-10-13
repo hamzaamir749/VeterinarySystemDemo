@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pdlg_color_gray"
+    tools:context=".StoreSection.StoreMyProductsActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbarlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/goldish"
+        >
+
+        <include
+            layout="@layout/toolbar_for_my_products_activity"
+            android:id="@+id/toolbar_for_myProduct_activity"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark"
+            >
+        </include>
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/smp_etSearchBox"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+
+            android:textColor="@android:color/black"
+            app:iconifiedByDefault="false"
+            app:queryHint="@string/searchMedicine" />
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/smp_loading"
+        style="@style/SpinKitView.Large.Circle"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/loading_background"
+        app:SpinKit_Color="@color/goldish"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/smp_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appbarlayout"
+        android:layout_marginTop="5dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</RelativeLayout>

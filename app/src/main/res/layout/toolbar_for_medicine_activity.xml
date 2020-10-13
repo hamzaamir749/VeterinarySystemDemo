@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/toolbar_for_medicine_activity"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/loginBackgroundcolor"
+    android:background="@color/golden"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
     android:layout_height="wrap_content"
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
-    android:text="Medicines"
+    android:text="@string/Medicines"
     android:gravity="center"
     android:layout_alignParentStart="true"
     android:layout_centerInParent="true"
@@ -59,4 +59,4 @@
     </RelativeLayout>
 
 
-</android.support.v7.widget.Toolbar>
+</androidx.appcompat.widget.Toolbar>

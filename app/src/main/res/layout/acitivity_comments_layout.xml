@@ -3,13 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/loginBackgroundcolor">
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="7dp"
-        android:background="@drawable/comments_border">
+        android:background="@drawable/input_style">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
                 android:id="@+id/comment_profile_pic"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/navheaderprofilepicicon"
+                android:src="@drawable/profileicon"
                 android:layout_margin="5dp"/>
 
             <LinearLayout
@@ -33,6 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:text="User Name"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
@@ -46,7 +47,7 @@
                         android:id="@+id/simple_Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="  Commented on: "
+                        android:text="@string/commentedat"
                         android:textColor="@android:color/black"
                         android:textSize="14sp"
                         android:textStyle="bold"
@@ -57,7 +58,8 @@
                         android:layout_height="wrap_content"
                         android:text="Date"
                         android:layout_marginLeft="3dp"
-                        android:textColor="@color/pdlg_color_white"
+                        android:layout_marginRight="3dp"
+                        android:textColor="@android:color/white"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         />
@@ -86,7 +88,7 @@
                 android:text="Time"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:textColor="@color/pdlg_color_white"
+                android:textColor="@android:color/white"
                 android:textAlignment="viewEnd"
                 />
 

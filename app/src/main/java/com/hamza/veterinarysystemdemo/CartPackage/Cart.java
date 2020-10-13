@@ -3,7 +3,7 @@ package com.hamza.veterinarysystemdemo.CartPackage;
 import android.content.Context;
 import android.view.View;
 
-import com.hamza.veterinarysystemdemo.UserSessionManager;
+import com.hamza.veterinarysystemdemo.Session.UserSessionManager;
 import com.hamza.veterinarysystemdemo.models.userMedicineListModel;
 
 import java.util.ArrayList;

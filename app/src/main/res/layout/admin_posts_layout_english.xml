@@ -2,18 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/loginBackgroundcolor">
+    android:background="@drawable/input_with_background">
 
     <LinearLayout
         android:id="@+id/lineartop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="4dp"
         android:orientation="vertical"
-        android:padding="15dp"
+        android:padding="3dp"
 
         >
 
@@ -22,15 +21,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:padding="3dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/post_admin_image"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginLeft="4dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/navheaderprofilepicicon" />
+                android:src="@drawable/profileicon" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,10 +41,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="8dp"
-
                     android:text="User Name"
                     android:textAlignment="textStart"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/goldish"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -114,24 +111,16 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="8dp"
             android:layout_marginRight="15dp"
-            android:background="@drawable/comments_border"
+            android:background="@drawable/input_style"
             android:baselineAlignBottom="false"
             android:padding="10dp"
             android:text="Comments..."
             android:textAlignment="center"
-            android:textColor="@color/pdlg_color_white"
+            android:textColor="@android:color/white"
             android:textSize="22sp"
             android:textStyle="bold"
 
             />
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_below="@id/lineartop"
-        android:layout_height="8dp"
-        android:layout_marginTop="10dp"
-        android:background="#fff"></LinearLayout>
-
 
 </RelativeLayout>

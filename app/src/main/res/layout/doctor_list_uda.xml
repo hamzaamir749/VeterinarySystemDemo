@@ -5,17 +5,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:background="@color/loginBackgroundcolor"
+        android:background="@drawable/input_with_background"
         android:orientation="horizontal"
         >
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="120dp"
+            android:layout_width="100dp"
             android:layout_margin="7dp"
             android:src="@drawable/navheaderprofilepicicon"
             android:id="@+id/image_uda_doctor"
-            android:layout_height="120dp"
-            android:layout_marginLeft="5dp"/>
+            android:layout_height="80dp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +27,7 @@
                 android:text="Doctor Name"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="@color/pdlg_color_white"
+                android:textColor="@color/goldish"
                 android:layout_marginTop="20dp"
                 android:id="@+id/doctor_name_uda"
                 />

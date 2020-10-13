@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/pdlg_color_yellow"
+    android:background="@drawable/input_with_background"
     android:layout_margin="5dp">
 
     <TextView
@@ -15,7 +15,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/pdlg_color_yellow"
+        android:padding="5dp"
+        android:background="@drawable/input_with_background"
         android:orientation="horizontal">
 
         <ImageView
@@ -58,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Medicine Name"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/goldish"
                     android:textSize="16sp" />
 
                 <LinearLayout
@@ -69,7 +70,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Store: "
+                        android:text="@string/storee"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
                         android:textSize="12sp" />
 
                     <TextView
@@ -95,8 +98,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Rs. "
-                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/rs"
+                        android:textColor="@android:color/white"
                         android:textSize="16sp" />
 
                     <TextView
@@ -104,7 +107,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@android:color/holo_red_dark"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -186,4 +189,4 @@
     </LinearLayout>
 
 
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>

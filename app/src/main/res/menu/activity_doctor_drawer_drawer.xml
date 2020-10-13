@@ -5,21 +5,33 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="User Problems" />
+            android:id="@+id/nav_doctor_userproblems"
+            android:icon="@drawable/navprroblems"
+            android:title="@string/Addproblems" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Appointments" />
+            android:id="@+id/nav_doctor_appointments"
+            android:icon="@drawable/navclient"
+            android:title="@string/appointments" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Settings" />
+            android:id="@+id/nav_doctor_medicine"
+            android:icon="@drawable/navmedicines"
+            android:title="@string/Medicines" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Log Out" />
+            android:id="@+id/nav_doctor_cart"
+            android:icon="@drawable/navcart"
+            android:title="@string/Cart" />
+        <item
+            android:id="@+id/nav_doctor_settings"
+            android:icon="@drawable/navsettings"
+            android:title="@string/Settings" />
+        <item
+            android:id="@+id/nav_doctor_history"
+            android:icon="@drawable/navhistory"
+            android:title="@string/History" />
+        <item
+            android:id="@+id/nav_doctor_logout"
+            android:icon="@drawable/navlogout"
+            android:title="@string/Logout" />
     </group>
 
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@color/loginBackgroundcolor"
+    android:background="@color/goldish"
     android:gravity="bottom"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -13,13 +13,14 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageView"
+        android:id="@+id/nav_header_doctor_pic"
         android:layout_width="150dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:contentDescription="@string/nav_header_desc"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@drawable/navheaderprofilepicicon" />
+        android:layout_marginTop="5dp"
+        android:src="@drawable/profileicon" />
 
     <TextView
         android:layout_width="match_parent"
@@ -30,6 +31,8 @@
         android:gravity="center"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:id="@+id/nav_header_doctor_name"
+        />
 
 </LinearLayout>

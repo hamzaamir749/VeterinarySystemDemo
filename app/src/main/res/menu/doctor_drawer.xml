@@ -4,13 +4,13 @@
     <item
         android:id="@+id/dots_doctor_cLanguage"
         android:orderInCategory="100"
-        android:title="Change Language"
+        android:title="@string/ChangeLanguage"
         android:icon="@drawable/dot_language"
         app:showAsAction="never" />
     <item
         android:id="@+id/dots_doctor_contacts"
         android:orderInCategory="100"
-        android:title="About Us"
+        android:title="@string/AboutUs"
         android:icon="@drawable/dot_about_us"
         app:showAsAction="never" />
 </menu>

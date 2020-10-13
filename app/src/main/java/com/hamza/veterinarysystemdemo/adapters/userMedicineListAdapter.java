@@ -1,35 +1,38 @@
 package com.hamza.veterinarysystemdemo.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hamza.veterinarysystemdemo.CartPackage.Cart;
 import com.hamza.veterinarysystemdemo.R;
-import com.hamza.veterinarysystemdemo.UserSessionManager;
+import com.hamza.veterinarysystemdemo.Session.UserSessionManager;
 import com.hamza.veterinarysystemdemo.models.userMedicineListModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class userMedicineListAdapter extends RecyclerView.Adapter<userMedicineListAdapter.modelViewHolder> {
+public class userMedicineListAdapter extends RecyclerView.Adapter<userMedicineListAdapter.modelViewHolder> implements Filterable {
 
-    List<userMedicineListModel> medicineList;
+    public List<userMedicineListModel> medicineList;
+    public List<userMedicineListModel> filterList;
     Context mContext;
-    userMedicineListModel product;
+    MedicineFilterForUserAndDoctor filter;
 
 
     public userMedicineListAdapter(List<userMedicineListModel> medicineList, Context mContext) {
         this.medicineList = medicineList;
         this.mContext = mContext;
+        this.filterList = medicineList;
     }
 
     @NonNull
@@ -43,12 +46,10 @@ public class userMedicineListAdapter extends RecyclerView.Adapter<userMedicineLi
     @Override
     public void onBindViewHolder(@NonNull final modelViewHolder holder, int i) {
         final userMedicineListModel product = medicineList.get(i);
-        final String price=product.getmPrice();
-        if (UserSessionManager.cart !=null)
-        {
-           int quantity=UserSessionManager.cart.getItemQuantity(product.getmID());
-            if (quantity != 0)
-            {
+        final String price = product.getmPrice();
+        if (UserSessionManager.cart != null) {
+            int quantity = UserSessionManager.cart.getItemQuantity(product.getmID());
+            if (quantity != 0) {
                 holder.add.setText(String.valueOf(UserSessionManager.cart.getItemQuantity(product.getmID())));
                 holder.btnPlus.setVisibility(View.VISIBLE);
                 holder.btnMinus.setVisibility(View.VISIBLE);
@@ -58,17 +59,15 @@ public class userMedicineListAdapter extends RecyclerView.Adapter<userMedicineLi
                 holder.btnPlus.setFocusable(true);
                 holder.btnMinus.setClickable(true);
                 holder.btnMinus.setFocusable(true);
-            }
-            else
-            {
-                holder.add.setText("ADD");
+            } else {
+                holder.add.setText(mContext.getResources().getString(R.string.add));
             }
 
         }
 
-           holder.mName.setText(product.getmName());
+        holder.mName.setText(product.getmName());
         holder.mPrice.setText(product.getmPrice());
-        holder.sName.setText( product.getmStoreName());
+        holder.sName.setText(product.getmStoreName());
         Picasso.get().load(product.getmImage()).into(holder.mImage);
         holder.add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +86,7 @@ public class userMedicineListAdapter extends RecyclerView.Adapter<userMedicineLi
                 holder.btnPlus.setFocusable(true);
                 holder.btnMinus.setClickable(true);
                 holder.btnMinus.setFocusable(true);
-                Toast.makeText(mContext.getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext.getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
             }
         });
         holder.btnPlus.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +95,7 @@ public class userMedicineListAdapter extends RecyclerView.Adapter<userMedicineLi
                 addToCart(product);
                 product.setPrice(Double.valueOf(price));
                 product.setQuantity(UserSessionManager.cart.getItemQuantity(product.getmID()));
-                int qty = (int)product.getQuantity();
+                int qty = (int) product.getQuantity();
                 holder.add.setText(String.valueOf(qty));
             }
         });
@@ -104,16 +103,16 @@ public class userMedicineListAdapter extends RecyclerView.Adapter<userMedicineLi
             @Override
             public void onClick(View v) {
                 UserSessionManager.cart.removeFromCart(product);
-                int qty = (int)UserSessionManager.cart.getItemQuantity(product.getmID());
-                if(UserSessionManager.cart.getTotalItems()==0){
+                int qty = (int) UserSessionManager.cart.getItemQuantity(product.getmID());
+                if (UserSessionManager.cart.getTotalItems() == 0) {
                     UserSessionManager.cart.removeBadge();
                     UserSessionManager.cart.productList.clear();
                     UserSessionManager.cart = null;
-                }else{
-                    UserSessionManager.cart.setBadge(UserSessionManager.cart.getTotalItems()+"");
+                } else {
+                    UserSessionManager.cart.setBadge(UserSessionManager.cart.getTotalItems() + "");
                 }
-                if(qty==0){
-                    holder.add.setText("ADD");
+                if (qty == 0) {
+                    holder.add.setText(mContext.getResources().getString(R.string.add));
                     holder.btnMinus.setVisibility(View.GONE);
                     holder.btnPlus.setVisibility(View.GONE);
                     holder.add.setFocusable(true);
@@ -125,7 +124,7 @@ public class userMedicineListAdapter extends RecyclerView.Adapter<userMedicineLi
                     return;
                 }
                 product.setPrice(Double.valueOf(price));
-                holder.add.setText(""+qty);
+                holder.add.setText("" + qty);
 
             }
         });
@@ -136,6 +135,14 @@ public class userMedicineListAdapter extends RecyclerView.Adapter<userMedicineLi
     @Override
     public int getItemCount() {
         return medicineList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (filter == null) {
+            filter=new MedicineFilterForUserAndDoctor(this,filterList);
+        }
+        return filter;
     }
 
     private void addToCart(userMedicineListModel product) {

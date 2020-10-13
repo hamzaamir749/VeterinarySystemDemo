@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/loginBackgroundcolor">
+    android:background="@drawable/input_with_background">
 
     <LinearLayout
         android:id="@+id/lineartop"
@@ -13,7 +13,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="4dp"
         android:orientation="vertical"
-        android:padding="15dp"
+        android:padding="3dp"
 
         >
 
@@ -30,7 +30,7 @@
                 android:layout_height="60dp"
                 android:layout_marginLeft="4dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/navheaderprofilepicicon" />
+                android:src="@drawable/profileicon" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                     android:layout_marginTop="8dp"
                     android:text="User Name"
                     android:gravity="right"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/goldish"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -122,18 +122,8 @@
             android:textColor="@color/pdlg_color_white"
             android:textSize="22sp"
             android:textStyle="bold"
-
             />
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_below="@id/lineartop"
-        android:layout_height="8dp"
-        android:layout_marginTop="10dp"
-        android:background="#fff"></LinearLayout>
-
-
 </RelativeLayout>
 
 

@@ -2,7 +2,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/loginBackgroundcolor"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -14,7 +13,7 @@
         android:padding="15dp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:background="@drawable/post_border"
+        android:background="@drawable/input_style"
 
         >
         <LinearLayout
@@ -28,7 +27,7 @@
                 android:id="@+id/post_User_image"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/navheaderprofilepicicon"
+                android:src="@drawable/profileicon"
                 android:scaleType="centerCrop"
                 android:layout_marginLeft="4dp"
                 />
@@ -42,7 +41,6 @@
                     android:layout_height="wrap_content"
                     android:text="User Name"
                     android:layout_marginLeft="5dp"
-
                     android:layout_marginTop="8dp"
                     android:textAlignment="textStart"
                     android:textSize="16sp"
@@ -59,7 +57,7 @@
                         android:id="@+id/text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Posted at :"
+                        android:text="@string/postedat"
                         android:textColor="@android:color/black"
                         android:textSize="13sp"
                         android:textStyle="bold"/>
@@ -70,6 +68,11 @@
                         android:text="Date"
                         android:textColor="@android:color/white"
                         android:textSize="13sp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" "
                         />
                     <TextView
                         android:id="@+id/post_time"
@@ -110,13 +113,13 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="8dp"
             android:layout_marginRight="15dp"
-            android:text="Comments..."
+            android:text="@string/comments"
             android:textStyle="bold"
             android:textAlignment="center"
             android:textSize="22sp"
-            android:background="@drawable/comments_border"
+            android:background="@drawable/input_style"
             android:padding="10dp"
-            android:textColor="@color/pdlg_color_white"
+            android:textColor="@android:color/white"
             android:layout_gravity="center"
             android:baselineAlignBottom="false"
 

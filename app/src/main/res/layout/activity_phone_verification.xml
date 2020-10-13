@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pdlg_color_gray"
+    tools:context=".UserSection.PhoneVerificationsActivity.PhoneVerificationActivity">
+
+    <include
+        android:id="@+id/phone_verification_toolbar"
+        layout="@layout/toolbar_for_all">
+
+    </include>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/goldencropicon" />
+
+        <TextView
+            android:id="@+id/pv_msg3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/MobileNumber"
+            android:textAlignment="center"
+            android:textColor="@color/golden"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/pv_msg1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wsycc"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/pv_msg2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/stvyi"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edt_phone_number_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/input_style"
+            android:drawableLeft="@drawable/ic_phone_android_black_24dp"
+            android:fontFamily="@font/novasquare"
+            android:hint="+923001234567"
+            android:inputType="phone"
+            android:padding="12dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_send_verification_code"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/button_style"
+            android:drawableRight="@drawable/ic_arrow_forward_black_24dp"
+            android:fontFamily="@font/novasquare"
+            android:gravity="center"
+            android:text="@string/Next"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <!--Verification-->
+        <TextView
+            android:id="@+id/pv_msg4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/VerificationCode"
+            android:textAlignment="center"
+            android:textColor="@color/golden"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+
+            android:id="@+id/pv_msg5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wjsycc"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+
+            android:id="@+id/pv_msg6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/styneb"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <com.goodiebag.pinview.Pinview
+            android:id="@+id/edt_verification_code_input"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            app:cursorVisible="true"
+            app:forceKeyboard="true"
+            app:hint="0"
+            app:inputType="number"
+            app:pinBackground="@color/golden"
+            app:pinHeight="40dp"
+            app:pinLength="6"
+            app:pinWidth="40dp">
+
+        </com.goodiebag.pinview.Pinview>
+
+        <Button
+            android:id="@+id/btn_verify_verification_code"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="33dp"
+            android:background="@drawable/button_style"
+            android:drawableRight="@drawable/ic_arrow_forward_black_24dp"
+            android:fontFamily="@font/novasquare"
+            android:gravity="center"
+            android:text="@string/Verify"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,32 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <TextView
         android:id="@+id/diseases_animal_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Animal Name"
+        android:text="@string/Animalame"
         android:textSize="30dp"
         android:gravity="center"
         android:padding="15dp"
-        android:background="@drawable/diseases_textview_background"
+        android:background="@drawable/input_style"
         android:textStyle="bold"
-        android:textColor="#ffffff"
+        android:textColor="@color/goldish"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="5dp"
         />
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_marginRight="3dp"
-        android:layout_marginLeft="3dp"
-        android:layout_below="@id/diseases_animal_name"
-        android:layout_marginTop="3dp"
-        android:background="@drawable/diseases_line_background"
-
-        />
-
-
 
 </RelativeLayout>

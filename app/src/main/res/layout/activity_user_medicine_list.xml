@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".userMedicineListActivity"
+    android:background="@color/pdlg_color_gray"
+    tools:context=".MedicineActivity.MedicineListActivity"
     >
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/appbarlayout"
-        android:theme="@style/AppTheme.PopupOverlay"
-        android:background="@color/loginBackgroundcolor">
+        android:background="@color/goldish">
         <include
             layout="@layout/toolbar_for_medicine_activity"
             android:id="@+id/user_medicine_list_toolbar"
@@ -22,27 +22,38 @@
         </include>
 
 
-        <android.support.v7.widget.SearchView
+        <androidx.appcompat.widget.SearchView
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:id="@+id/etSearchBox"
+            android:id="@+id/etmedicineSearchBox"
             android:layout_margin="8dp"
-            app:queryHint="Search Products..."
-            android:background="@drawable/searchbox_drawable"
-            android:textColor="@color/textColorPrimary"
+            app:queryHint="@string/searchMedicine"
+            android:textColor="#000000"
             app:iconifiedByDefault="false" />
 
 
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-
-    <android.support.v7.widget.RecyclerView
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/uml_loading"
+        style="@style/SpinKitView.Large.Circle"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/loading_background"
+        app:SpinKit_Color="@color/goldish"
+        />
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/appbarlayout"
         android:layout_marginTop="5dp"
         android:id="@+id/user_medicine_list_recycler"
         >
-    </android.support.v7.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 </RelativeLayout>

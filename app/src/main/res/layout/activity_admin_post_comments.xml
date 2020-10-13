@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pdlg_color_gray"
+    tools:context=".AdminPostsActivity.AdminPostCommentsActivity">
+
+
+    <include
+        layout="@layout/toolbar_for_all"
+        android:id="@+id/admincommentsToolbar">
+
+    </include>
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/comadmin_loading"
+        style="@style/SpinKitView.Large.Circle"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/loading_background"
+        app:SpinKit_Color="@color/goldish"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/adminlinearForcommentHere"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/admincommentRecycler"
+        android:layout_below="@id/admincommentsToolbar"
+        >
+
+    </androidx.recyclerview.widget.RecyclerView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:weightSum="3"
+        android:layout_margin="5dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/adminlinearForcommentHere"
+        android:background="@drawable/input_style"
+
+        >
+
+        <EditText
+            android:gravity="bottom"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/typehere"
+            android:background="@drawable/input_style"
+            android:padding="15dp"
+            android:textSize="22sp"
+            android:layout_weight="2"
+            android:id="@+id/admincommentInput"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+            />
+        <ImageView
+            android:id="@+id/btn_admin_comment_post"
+            android:layout_width="90dp"
+            android:layout_height="49dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="3dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"/>
+
+    </LinearLayout>
+</RelativeLayout>

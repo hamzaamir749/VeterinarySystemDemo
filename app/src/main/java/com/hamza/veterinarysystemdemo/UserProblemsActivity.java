@@ -1,15 +1,21 @@
 package com.hamza.veterinarysystemdemo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -17,18 +23,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.hamza.veterinarysystemdemo.adapters.diseasesAnimalsNamesAdapter;
-import com.hamza.veterinarysystemdemo.adapters.userProblemsAdapter;
-import com.hamza.veterinarysystemdemo.models.diseasesAnimalsNamesModel;
+import com.github.ybq.android.spinkit.style.ChasingDots;
+import com.github.ybq.android.spinkit.style.Circle;
+import com.hamza.veterinarysystemdemo.UserSection.UserProblemsActivity.UserProblemsAdapterUrdu;
+import com.hamza.veterinarysystemdemo.UserSection.UserProblemsActivity.userProblemsAdapterEnglish;
 import com.hamza.veterinarysystemdemo.models.userProblemsModel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class UserProblemsActivity extends AppCompatActivity {
@@ -40,32 +45,21 @@ public class UserProblemsActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     Context context;
     IPADDRESS ipaddress;
-    private userProblemsAdapter uPAdapter;
-    private String getPost_url;
+    SearchView searchView;
+    private userProblemsAdapterEnglish uPAdapter;
+    private String getPost_url,lang;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_problems);
-
+        searchView=findViewById(R.id.etuserproblemsSearchBox);
         userPromblemsRecycler=findViewById(R.id.userProblemRecycler);
-
-        ipaddress=new IPADDRESS();
-        String ip=ipaddress.getIpaddress();
-        getPost_url="http://www.veterinarysystem.ga/getproblems.php";
-
-        postList=new ArrayList<>();
-
-        context=this;
-        linearLayoutManager=new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        userPromblemsRecycler.setLayoutManager(linearLayoutManager);
-        userPromblemsRecycler.setHasFixedSize(true);
-
-
+        progressBar = findViewById(R.id.up_loading);
         mToolBar=findViewById(R.id.userProblemsToolbar);
         setSupportActionBar(mToolBar);
-        getSupportActionBar().setTitle("User Problems");
+        getSupportActionBar().setTitle(R.string.UserProblems);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -77,6 +71,20 @@ public class UserProblemsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getActionBar().setHomeButtonEnabled(true);
         }
+        ipaddress=new IPADDRESS();
+        String ip=ipaddress.getIpaddress();
+        //getPost_url="http://www.veterinarysystem.ga/getproblems.php";
+        getPost_url="http://" + ip + "/VeterinarySystem/getproblems.php";
+
+        postList=new ArrayList<>();
+
+        context=this;
+        linearLayoutManager=new LinearLayoutManager(this);
+        userPromblemsRecycler.setLayoutManager(linearLayoutManager);
+        userPromblemsRecycler.setHasFixedSize(true);
+
+
+
         add_post_activity=findViewById(R.id.add_new_post_button);
 
 
@@ -87,7 +95,7 @@ public class UserProblemsActivity extends AppCompatActivity {
                 SendUserToAddProblemsActivity();
             }
         });
-
+        progressBar.setIndeterminateDrawable(new Circle());
         getAllPosts();
     }
 
@@ -114,19 +122,44 @@ public class UserProblemsActivity extends AppCompatActivity {
                             String pdate=object.getString("pdate");
                             userProblemsModel userProblemsModelobj=new userProblemsModel(id,pdes,ptime,pdate,pimage,pname,ppimage);
                             postList.add(userProblemsModelobj);
-                            uPAdapter=new userProblemsAdapter(postList,context);
-                        }
-                        Collections.reverse(postList);
 
-                        userPromblemsRecycler.setAdapter(uPAdapter);
+                        }
+                        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                            @Override
+                            public boolean onQueryTextSubmit(String s) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onQueryTextChange(String s) {
+                                uPAdapter.getFilter().filter(s);
+                                return false;
+                            }
+                        });
+                        Collections.reverse(postList);
+                        progressBar.setVisibility(View.GONE);
+                       // userPromblemsRecycler.setVisibility(View.VISIBLE);
+                        if (lang.equals("en"))
+                        {
+                            uPAdapter=new userProblemsAdapterEnglish(postList,context);
+                            userPromblemsRecycler.setAdapter(uPAdapter);
+                        }
+                        else if (lang.equals("ur"))
+                        {
+                            UserProblemsAdapterUrdu adapterUrdu=new UserProblemsAdapterUrdu(postList,context);
+                            userPromblemsRecycler.setAdapter(adapterUrdu);
+                        }
+
 
                     }
                     else {
-                        Toast.makeText(getApplicationContext(), "Could not get post data", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                        //Toast.makeText(getApplicationContext(), "Could not get post data", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (Exception e)
                 {
+                    progressBar.setVisibility(View.GONE);
                    // Toast.makeText(getApplicationContext(),"parsing exception: "+e.getMessage(),Toast.LENGTH_LONG).show();
                 }
 
@@ -144,6 +177,14 @@ public class UserProblemsActivity extends AppCompatActivity {
         Intent addPrombelsIntent=new Intent(getApplicationContext(),AddProblemsActivity.class);
         startActivity(addPrombelsIntent);
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences sharedPreferences = getSharedPreferences("langSetting", Activity.MODE_PRIVATE);
+        lang = sharedPreferences.getString("my_lang", "en");
+
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

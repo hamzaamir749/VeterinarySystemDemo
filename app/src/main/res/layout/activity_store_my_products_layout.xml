@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="300dp"
+    android:id="@+id/productItem"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginLeft="5dp"
+    android:background="@drawable/input_with_background"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_gravity="center">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/clickableLayout"
+
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="18dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:background="@android:color/holo_red_light"
+                android:text="-5%"
+                android:visibility="invisible"
+                android:layout_alignParentEnd="true"
+                android:paddingStart="3dp"
+                android:paddingLeft="3dp"
+                android:paddingEnd="3dp"
+                android:id="@+id/tvPercentDiscount"
+                android:paddingRight="3dp"
+                android:layout_alignParentRight="true"
+                android:gravity="end"
+                android:textColor="@android:color/white"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:id="@+id/smp_medicine_image"
+            android:scaleType="fitCenter"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_height="200dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:gravity="start"
+                android:layout_alignParentTop="true"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="My Product"
+                    android:textColor="@color/goldish"
+                    android:id="@+id/smp_medicine_name"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:id="@+id/discountedPriceLayout"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Price"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:layout_marginRight="3dp"
+                        android:layout_marginLeft="3dp"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:id="@+id/smp__medicine_price"
+                        android:text="12"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="70dp"
+                android:gravity="center"
+                android:id="@+id/smp_medicine_edit"
+                android:background="@color/orange_color"
+                android:layout_gravity="bottom|end"
+                android:orientation="horizontal"
+                android:layout_height="28dp">
+
+                <TextView
+                    android:layout_width="30dp"
+                    android:textSize="12sp"
+                    android:text="@string/Edit"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/textColorPrimary"
+                    android:visibility="visible"
+                    android:background="@android:color/transparent"
+                    android:layout_height="wrap_content" />
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

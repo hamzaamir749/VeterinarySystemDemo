@@ -1,21 +1,24 @@
 package com.hamza.veterinarysystemdemo.CartPackage;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.hamza.veterinarysystemdemo.CheckOutActivity;
 import com.hamza.veterinarysystemdemo.R;
-import com.hamza.veterinarysystemdemo.UserSessionManager;
+import com.hamza.veterinarysystemdemo.Session.UserSessionManager;
 import com.hamza.veterinarysystemdemo.models.userMedicineListModel;
 
 import java.util.List;
@@ -33,6 +36,9 @@ public class CartActivity extends AppCompatActivity {
     static List<userMedicineListModel> productList;
     Button btnCheckout;
     Toolbar mToolBar;
+    CartAdapterUrdu adapterUrdu;
+    String lang;
+    boolean isEnglish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +50,7 @@ public class CartActivity extends AppCompatActivity {
         btnCheckout = findViewById(R.id.btnCheckout);
         mToolBar=findViewById(R.id.toolbar_for_cart_activity);
         setSupportActionBar(mToolBar);
-        getSupportActionBar().setTitle("Cart");
+        getSupportActionBar().setTitle(R.string.cart);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -65,6 +71,9 @@ public class CartActivity extends AppCompatActivity {
         lvCartItems.setHasFixedSize(true);
         lvCartItems.setLayoutManager(linearLayoutManager);
         userSessionManager = new UserSessionManager(this);
+        SharedPreferences sharedPreferences = getSharedPreferences("langSetting", Activity.MODE_PRIVATE);
+        lang = sharedPreferences.getString("my_lang", "en");
+       // Toast.makeText(context, lang, Toast.LENGTH_SHORT).show();
         setCartItemList();
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +81,11 @@ public class CartActivity extends AppCompatActivity {
                 SendUserToCheckOutActivity();
             }
         });
+
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
 
     }
 
@@ -86,8 +100,22 @@ public class CartActivity extends AppCompatActivity {
             tvNoOrder.setVisibility(View.GONE);
             checkoutLayout.setVisibility(View.VISIBLE);
             productList = UserSessionManager.cart.productList;
-            cartAdapter = new CartAdapter(productList, context);
-            lvCartItems.setAdapter(cartAdapter);
+
+
+            if (lang.equals("ur"))
+            {
+                adapterUrdu=new CartAdapterUrdu(productList,context);
+                lvCartItems.setAdapter(adapterUrdu);
+                adapterUrdu.notifyDataSetChanged();
+
+            }
+            else if(lang.equals("en"))
+            {
+                cartAdapter = new CartAdapter(productList, context);
+                lvCartItems.setAdapter(cartAdapter);
+                cartAdapter.notifyDataSetChanged();
+            }
+
             setTotalPrice();
         } else {
             lvCartItems.setVisibility(View.GONE);
@@ -99,7 +127,7 @@ public class CartActivity extends AppCompatActivity {
     public void setTotalPrice() {
 
         int price = (int) UserSessionManager.cart.getTotalPrice();
-        tvTotalPrice.setText("Rs. " + String.valueOf(price));
+        tvTotalPrice.setText(String.valueOf(price));
     }
 
     @Override

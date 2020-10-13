@@ -1,52 +1,45 @@
 {
   "project_info": {
-    "project_number": "81860962512",
-    "firebase_url": "https://veterinarysystemdemo.firebaseio.com",
-    "project_id": "veterinarysystemdemo",
-    "storage_bucket": "veterinarysystemdemo.appspot.com"
+    "project_number": "121061381438",
+    "firebase_url": "https://veterinary-35585.firebaseio.com",
+    "project_id": "veterinary-35585",
+    "storage_bucket": "veterinary-35585.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:81860962512:android:13715dfe4268efb1",
+        "mobilesdk_app_id": "1:121061381438:android:d36936a85b14da666f086f",
         "android_client_info": {
           "package_name": "com.hamza.veterinarysystemdemo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "81860962512-n5qamm672eitccd8q1nmcd85flnfjthf.apps.googleusercontent.com",
+          "client_id": "121061381438-goevqbe30tf4fvsf50es8jk4bi0b0bbi.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.hamza.veterinarysystemdemo",
-            "certificate_hash": "af7aee2ee1c698b75bbbc2433845f18b8bd03146"
+            "certificate_hash": "43fba3474da29a0f0431a683ae018e81308bd135"
           }
         },
         {
-          "client_id": "81860962512-8i9s9ft8otcqdq04dhpfop9vnsutls6p.apps.googleusercontent.com",
+          "client_id": "121061381438-vn779eafh2pf7o7jmjjpfleoe3741glb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB5GkU_e2WNAeNYs6l_6tTDRFhMjG0v3xY"
+          "current_key": "AIzaSyBSaBPFpoyXpnG8g4JjQPJbJBrTO7z3xig"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "81860962512-8i9s9ft8otcqdq04dhpfop9vnsutls6p.apps.googleusercontent.com",
+              "client_id": "121061381438-vn779eafh2pf7o7jmjjpfleoe3741glb.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
